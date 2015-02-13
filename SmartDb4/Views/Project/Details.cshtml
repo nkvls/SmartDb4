@@ -1,0 +1,51 @@
+﻿@model SmartDb4.Models.Project
+
+@{
+    ViewBag.Title = "Project";
+}
+
+<div class="pagelayout">
+    <div>
+        <div class="pull-left">
+            <div class="triangleRight" style="float:right;border-color: #FFF #FFF #FFF #6085c6 !important;"></div>
+            <div class="rectangle" style="float:right;background: #6085c6 !important">@Html.ActionLink("Project", "Index", null, new { style = "color:white;text-decoration: none"})</div>
+        </div>
+   
+        <div style="float:left">
+            <div class="triangleLeft pull-left"></div>
+            <div class="rectangle pull-left">Details</div>
+            <div class="triangleRight pull-left"></div>
+        </div>
+    </div>
+    <div style="clear: both;height:20px;"></div>
+    @* <ol class="breadcrumb">
+        <li>@Html.ActionLink("User", "Index")</li>
+        <li class="active">Details</li>
+    </ol>*@
+    <div class="container labelfont">
+        <div class="row form-group">
+            <div class="col-md-2 ">@Html.DisplayNameFor(model => model.ProjectName) :</div>
+            <div class="col-md-4 col-md-pull-1">@Html.DisplayFor(model => model.ProjectName)</div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-2 ">@Html.DisplayNameFor(model => model.Description) :</div>
+            <div class="col-md-4 col-md-pull-1">@Html.DisplayFor(model => model.Description)</div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-2 ">@Html.DisplayNameFor(model => model.StartDate) :</div>
+            <div class="col-md-4 col-md-pull-1">@Html.DisplayFor(model => model.StartDate)</div>
+            <div class="col-md-2 col-md-pull-3">@Html.DisplayNameFor(model => model.EndDate) :</div>
+            <div class="col-md-4 col-md-pull-4">@Html.DisplayFor(model => model.EndDate)</div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-2 ">@Html.DisplayNameFor(model => model.MaxNoOfParticipants) :</div>
+            <div class="col-md-4 col-md-pull-1">@Html.DisplayFor(model => model.MaxNoOfParticipants)</div>
+            <div class="col-md-2 col-md-pull-3">@Html.DisplayNameFor(model => model.Classification.ClassificationName) :</div>
+            <div class="col-md-4 col-md-pull-4">@Html.DisplayFor(model => model.Classification.ClassificationName)</div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-2 ">@Html.DisplayNameFor(model => model.Supervisor.UserName) :</div>
+            <div class="col-md-4 col-md-pull-1">@Html.DisplayFor(model => model.Supervisor.UserName)</div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,140 @@
+﻿@using System.Globalization
+@model List<SmartDb4.Models.Attendance>
+@{
+    ViewBag.Title = "Attendance";
+}
+
+<div class="pagelayout">
+    <div class="inline-display">
+        <div class="manageattendance"></div>
+        <div class="manageprojectHeader"><h3>Manage Attendance</h3></div>
+    </div>
+    <div>
+        <div class="pull-left">
+            <div class="triangleRight" style="float:right;border-color: #FFF #FFF #FFF #6085c6 !important;"></div>
+            <div class="rectangle" style="float:right;background: #6085c6 !important">@Html.ActionLink("Attendance", "Index", null, new { style = "color:white;text-decoration: none"})</div>
+        </div>
+    </div>
+    <div style="clear: both;height:20px;"></div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-sm-10">
+                        <div class="input-group margin-left1">
+                            @Html.TextBox("SearchString", null, new {@placeholder = "find by project name ", @class = "form-control"})
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="submit">Search</button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" onclick=" window.location.href = '@Url.Action("Create", "Attendance")'">
+                                    Capture
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-striped table-hover">
+                <tr>
+                    <th>
+                        @Html.ActionLink("Year", "Index", new { sortOrder = ViewBag.YearSortParm })
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].Week)
+                    </th>
+                    <th class="hidden-xs">
+                        @Html.DisplayNameFor(model => model[0].WeekString)
+                    </th>
+                    <th class="hidden-xs">
+                        @Html.ActionLink("Project Name", "Index", new { sortOrder = ViewBag.NameSortParm })
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Year)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Week)
+                        </td>
+                        <td class="hidden-xs">
+                            @Html.DisplayFor(modelItem => item.WeekString)
+                        </td>
+                        <td class="hidden-xs">
+                            @Html.DisplayFor(modelItem => item.Project.ProjectName)
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                                    Action <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li class="editMe cursor" data-url='@Url.Action("Edit", new {id = item.AttendanceId, pid = item.Project.ProjectId, week = item.Week, year = item.Year})'>
+                                        <a href="#">
+                                            <i  style="padding-right: 5px;" class="fa fa-pencil-square-o"></i>
+                                            Edit
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+</div>
+    
+
+
+<script>
+    function getDateOfISOWeek(week, year) {
+        var simple = new Date(year, 0, 1 + (week - 1) * 7);
+        var dow = simple.getDay();
+        var ISOweekStart = simple;
+        if (dow <= 4)
+            ISOweekStart.setDate(simple.getDate() - simple.getDay() + 1);
+        else
+            ISOweekStart.setDate(simple.getDate() + 8 - simple.getDay());
+        return ISOweekStart;
+    }
+    function getDateOfWeek(w, y) {
+        var d = (1 + (w - 1) * 7); // 1st of January + 7 days for each week
+
+        return new Date(y, 0, d);
+    }
+
+    $(document).on("click", ".editMe", function (e) {
+        var urlToExec = $(this).data('url');
+        var result = parseUri(urlToExec);
+        var week = result.queryKey['week'];
+        //alert('week ' + week);
+        var year = result.queryKey['year'];
+        //alert('year ' + year);
+        var projectId = result.queryKey['pid'];
+        //alert('proid ' + projectId);
+        //alert(urlToExec);
+        var currWeekDt = getDateOfISOWeek(week, year);
+        //alert('currWeekDt ' + currWeekDt);
+        var newMonth = currWeekDt.getMonth();
+        if (newMonth < 11) {
+            newMonth++;
+        }
+        var newDate = currWeekDt.getDate() + "/" + newMonth + "/" + currWeekDt.getFullYear();
+        window.location = "/Attendance/Edit?pid=" + projectId + "&dt=" + week + '-' + year;
+    });
+</script>
+
+

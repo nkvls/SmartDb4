@@ -1,0 +1,245 @@
+﻿@*@model List<SmartDb.Models.MemberAttendance>*@
+@model SmartDb4.Models.MemberAttendanceForView
+
+@{
+    ViewBag.Title = "Attendance";
+}
+
+<style type="text/css">
+    #currWeekDt
+    {
+        width:10em;
+        color: black;
+    }
+</style>
+
+
+<div class="pagelayout">
+    <div class="inline-display">
+        <div class="manageattendance"></div>
+        <div class="manageprojectHeader"><h3>Edit</h3></div>
+    </div>
+    <div>
+        <div class="pull-left">
+            <div class="triangleRight" style="float:right;border-color: #FFF #FFF #FFF #6085c6 !important;"></div>
+            <div class="rectangle" style="float:right;background: #6085c6 !important">@Html.ActionLink("Attendance", "Index", null, new { style = "color:white;text-decoration: none"})</div>
+        </div>
+   
+        <div style="float:left">
+            <div class="triangleLeft pull-left"></div>
+            <div class="rectangle pull-left">Edit</div>
+            <div class="triangleRight pull-left"></div>
+        </div>
+    </div>
+    <div style="clear: both;height:20px;"></div>
+
+    @*<ol class="breadcrumb">
+        <li>@Html.ActionLink("Attendance", "Index")</li>
+        <li class="active">Edit</li>
+    </ol>*@
+
+    @{
+        if (ViewBag.DisplayWeek != null)
+        {
+            <div class="alert alert-info alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <strong>Attendance displaying for : </strong> @ViewBag.DisplayWeek
+            </div>
+        }
+    }
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.AttendanceId, new { id = "editAttendanceId" })
+
+        <div class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-12 col-sm-12 col-lg-12">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                @*@ViewBag.DisplayWeek*@
+                                <div class="row">
+                                    <div class="col-lg-10">
+                                        <div class="col-md-2 margin-top05">Week<span class="textRed"> *</span></div>
+                                        <div class="col-md-3 col-md-pull-1">
+                                            @*@Html.EditorFor(model => model.DateForCurrentWeek, new { size = 2 })*@
+                                            @Html.EditorFor(model => model.DateForCurrentWeek, null, "currWeekDt", null)
+                                            @*@Html.HiddenFor(model => model.DateForCurrentWeek, new { @id = "currentWeekDt"})*@
+                                            @*@Html.ValidationMessageFor(model => model.DateForCurrentWeek)*@
+                                        </div>
+                                        <div class="col-md-2 col-md-pull-2 margin-top05">Project<span class="textRed"> *</span></div>
+                                        <div class="col-md-3 col-md-pull-3">
+                                            @Html.DropDownList("Project", ViewBag.ProjectId as SelectList, "Select a Project", new { id = "MemAttendancePrjId", @class = "form-control", style = "width:100%;height:30px;" })
+                                        </div>
+                                    </div><!-- /.col-lg-6 -->
+                                    <div class="col-lg-2">
+                                        <div class="input-group">
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default dataload" data-url='@Url.Action("Create")'>Load</button>
+                                            </span>
+                                        </div><!-- /input-group -->
+                                    </div><!-- /.col-lg-6 -->
+                                </div><!-- /.row -->
+                            </div>    
+                            <table class="table">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Monday @Model.MondayDate</th>
+                                    <th>Tuesday @Model.TuesdayDate</th>
+                                    <th>Wednesday @Model.WednesdayDate</th>
+                                    <th>Thursday @Model.ThursdayDate</th>
+                                    <th>Friday @Model.FridayDate</th>
+                                    <th>Saturday @Model.SaturdayDate</th>
+                                    <th>Sunday @Model.SundayDate</th>
+                                </tr>
+                                @for (int i = 0; i < Model.MemberAttendances.Count; i++)
+                                {
+                                    <tr>
+                                        <td class="rowData" style="width: 30%;max-width: 30%">
+                                            <p class="form-control-static">
+                                                @Html.DisplayFor(m => m.MemberAttendances[i].Member.MemberName, new { @readonly = "true" })
+                                            </p>
+                                            @Html.HiddenFor(x => x.MemberAttendances[i].Member.MemberName)
+                                            @Html.HiddenFor(x => x.MemberAttendances[i].Member.Address1)
+                                            @Html.HiddenFor(x => x.MemberAttendances[i].Member.Email)
+                                            @Html.HiddenFor(x => x.MemberAttendances[i].Member.City)
+                                            @Html.HiddenFor(x => x.MemberAttendances[i].Member.MemberId)
+                                        </td>
+                                        <td>
+                                            @Html.CheckBoxFor(m => m.MemberAttendances[i].Monday)
+                                            @Html.TextBoxFor(m => m.MemberAttendances[i].MondayRate, new { @class = "gridRateTextbox" })
+                                            @Html.ValidationMessageFor(m => m.MemberAttendances[i].MondayRate)
+                                        </td>
+                                        <td>
+                                            @Html.CheckBoxFor(m => m.MemberAttendances[i].Tuesday)
+                                            @Html.TextBoxFor(m => m.MemberAttendances[i].TuesdayRate, new { @class = "gridRateTextbox" })
+                                            @Html.ValidationMessageFor(m => m.MemberAttendances[i].TuesdayRate)
+                                        </td>
+                                        <td>
+                                            @Html.CheckBoxFor(m => m.MemberAttendances[i].Wednesday)
+                                            @Html.TextBoxFor(m => m.MemberAttendances[i].WednesdayRate, new { @class = "gridRateTextbox" })
+                                            @Html.ValidationMessageFor(m => m.MemberAttendances[i].WednesdayRate)
+                                        </td>
+                                        <td>
+                                            @Html.CheckBoxFor(m => m.MemberAttendances[i].Thursday)
+                                            @Html.TextBoxFor(m => m.MemberAttendances[i].ThursdayRate, new { @class = "gridRateTextbox" })
+                                            @Html.ValidationMessageFor(m => m.MemberAttendances[i].ThursdayRate)
+                                        </td>
+                                        <td>
+                                            @Html.CheckBoxFor(m => m.MemberAttendances[i].Friday)
+                                            @Html.TextBoxFor(m => m.MemberAttendances[i].FridayRate, new { @class = "gridRateTextbox" })
+                                            @Html.ValidationMessageFor(m => m.MemberAttendances[i].FridayRate)
+                                        </td>
+                                        <td>
+                                            @Html.CheckBoxFor(m => m.MemberAttendances[i].Saturday)
+                                            @Html.TextBoxFor(m => m.MemberAttendances[i].SaturdayRate, new { @class = "gridRateTextbox" })
+                                            @Html.ValidationMessageFor(m => m.MemberAttendances[i].SaturdayRate)
+                                        </td>
+                                        <td>
+                                            @Html.CheckBoxFor(m => m.MemberAttendances[i].Sunday)
+                                            @Html.TextBoxFor(m => m.MemberAttendances[i].SundayRate, new { @class = "gridRateTextbox" })
+                                            @Html.ValidationMessageFor(m => m.MemberAttendances[i].SundayRate)
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-12 col-sm-12 col-lg-12 col-md-12" style="margin-bottom: 10px;">
+                        <button type="button" class="btn btn-primary backttoindex" data-url='@Url.Action("Index")'>Back to List</button>
+                         @if (Model.MemberAttendances.Count > 0)
+                         {
+                            <button type="submit" class="btn btn-success">Save</button>
+                         }
+                    </div>                    
+                </div>
+            </div>
+    }
+</div>
+
+<script type="text/javascript">
+    $('#MemAttendancePrjId').change(function () {
+        var val = $('.btn-success');
+        if (val.val() != undefined) {
+            val.addClass("hidden");
+        }
+    });
+    $('#currWeekDt').change(function () {
+        var val = $('.btn-success');
+        if (val.val() != undefined) {
+            val.addClass("hidden");
+        }
+    });
+
+    $('#EditMemAttendancePrjId').change(function () {
+        var val = $('#EditMemAttendancePrjId');
+        var attendanceId = $('#editAttendanceId');
+        //alert(attendanceId.val());
+        if (val.val().length > 0) {
+            window.location = "/Attendance/Edit?id=" + attendanceId.val() + "&pid=" + val.val();
+        }
+    });
+    $(document).on("click", ".backttoindex", function (e) {
+        var urlToExec = $(this).data('url');
+        //alert(urlToExec);
+        window.location.href = "@Url.Action("Index")";
+    });
+</script>
+
+<script type="text/javascript">
+    //$('#MemAttendancePrjId').change(function () {
+    //    var val = $('#MemAttendancePrjId');
+    //    //alert(val.val());
+    //    if (val.val().length > 0) {
+    //        window.location = "/Attendance/Create?pid=" + val.val();
+    //    }
+    //});
+    $(document).on("click", ".backttoindex", function (e) {
+        var urlToExec = $(this).data('url');
+        //alert(urlToExec);
+        window.location.href = "@Url.Action("Index")";
+    });
+    $(document).on("click", ".dataload", function (e) {
+        //debugger;
+        //bootbox.alert('no project selected. cannot load data', function () {
+        //    //console.log("Alert Callback");
+        //    return;
+        //});
+        //bootbox.dialog({
+        //    message: 'no project selected. cannot load data',
+        //    title: "Error!",
+        //    buttons: {
+        //        main: {
+        //            label: "Ok",
+        //            className: "btn-primary",
+        //            callback: function () { }
+        //        }
+        //    }
+        //});
+
+        var projectIdDiv = $('#MemAttendancePrjId');
+        if (projectIdDiv.length == 0) {
+            alert('no project selected. cannot load data');
+            return;
+        }
+        var projectId = projectIdDiv.val();
+
+        var currentWeekDtDiv = $('#currWeekDt');
+        if (currentWeekDtDiv.length == 0) {
+            alert('no date selected. cannot load data');
+            return;
+        }
+        var currentWeekDt = currentWeekDtDiv.val();
+
+        //alert("/Attendance/Create?pid=" + projectId + "&dt=" + currentWeekDt);
+        window.location = "/Attendance/Edit?pid=" + projectId + "&dt=" + currentWeekDt;
+
+        //var urlToExec = $(this).data('url');
+        //alert(urlToExec);
+        @*window.location.href = '@Url.Action("Index")';*@
+    });
+</script>

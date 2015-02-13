@@ -1,0 +1,70 @@
+https://p3nwvpweb057.shr.prod.phx3.secureserver.net:8443/smb/
+https://50.62.160.97:8443/
+username => smartlondon
+password => Vrinda11!
+
+godaddy account details
+24/7 Support 020 7979 2661
+
+-------------------
+cust no : 20542878
+pin 	: 1020
+email	: ali@khan.vg
+
+----------------------------------------------------------
+new database user access details on godaddy
+user name : nitinv
+password  : vrinda11!
+-------------------------------------------------------
+----------------------------------------------------------
+web hosting user access details on godaddy
+user name : smartlondon
+password  : vrinda11!
+-------------------------------------------------------
+
+ftp access to godaddy server
+--------------------------------------
+50.62.160.97
+ftp login => smartlondon
+pwd => 0ycK1w@5
+ftp client filezilla
+
+
+go daddy email access
+--------------------------------------------
+https://login.secureserver.net/
+user name : nitin@pacificinfotech.co.uk
+pwd: vrinda11!
+
+github
+nitinv.verma@gmail.com / Nitin001
+
+http://support.godaddy.com/library/asp-net-reportviewer-with-local-processingmode/
+
+
+
+godaddy GENERAL TROUBLESHOOTING
+--------------------------------------------
+1. Check that you have provider name is defaultconnection string providerName="System.Data.SqlClient" appended at the end
+
+
+
+<system.web>
+        <trust level="Medium"/>
+        .....  
+    </system.web>
+--------------------------------------------------------------------------------------------------------------------------
+The Basement
+15 Gertrude Street
+London
+SW10 0JN
+020 7376 4668
+020 7376 7892
+07745352515
+amelia.mustapha@smartlondon.org.uk
+
+
+http://www.smartlondon.org.uk/
+http://www.theworksaparthotel.com/
+http://ursherhospitality.com/
+

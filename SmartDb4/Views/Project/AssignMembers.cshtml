@@ -1,0 +1,150 @@
+﻿@model SmartDb4.Models.MembersToProjectCollection
+
+@{
+    ViewBag.Title = "Assign Members";
+}
+
+<div class="pagelayout">
+    <div class="inline-display">
+        <div class="manageproject"></div>
+        <div class="manageprojectHeader"><h3>Assign Members</h3></div>
+    </div>
+    <div>
+        <div class="pull-left">
+            <div class="triangleRight" style="float:right;border-color: #FFF #FFF #FFF #6085c6 !important;"></div>
+            <div class="rectangle" style="float:right;background: #6085c6 !important">@Html.ActionLink("Project", "Index", null, new { style = "color:white;text-decoration: none"})</div>
+        </div>
+   
+        <div style="float:left">
+            <div class="triangleLeft pull-left"></div>
+            <div class="rectangle pull-left" style="width:150px;">Assign Members</div>
+            <div class="triangleRight pull-left"></div>
+        </div>
+    </div>
+    <div style="clear: both;height:20px;"></div>
+    @*<ol class="breadcrumb">
+        <li>@Html.ActionLink("Project", "Index")</li>
+        <li class="active">Assign Members</li>
+    </ol>*@
+@{
+    if(ViewBag.Error != null)
+    {
+        <div class="alert alert-danger alert-dismissable">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <strong>Error!</strong> @ViewBag.Error
+        </div>
+    }
+    <div class="alert alert-danger alert-dismissable hide" id="deleteAlert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <div id="errMsg"></div>
+    </div>
+}
+    <br/>
+    @using (Html.BeginForm()) 
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <div class="form-horizontal">
+            <div class="form-group">
+                <div class="col-12 col-sm-12 col-lg-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Project Details</div>
+                        <div class="panel-body labelfont">
+                            <div class="form-group">
+                                <span class="col-md-1">Name</span>
+                                <div class="col-md-2">
+                                    @Html.DisplayFor(model => model.Project.ProjectName)
+                                </div>
+                                <span class="col-md-4">Participants</span>
+                                <div class="col-md-5">
+                                    @Html.DisplayFor(model => model.Project.MaxNoOfParticipants)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class=" col-md-1">Start Date</span>
+                                <div class="col-md-2">
+                                    @Html.DisplayFor(model => model.Project.StartDate)
+                                </div>
+                                <span class="col-md-4">End Date</span>
+                                <div class="col-md-5">
+                                    @Html.DisplayFor(model => model.Project.EndDate)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="col-md-1">Description</span>
+                                <div class="col-md-8">
+                                    @Html.DisplayFor(model => model.Project.Description)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+            <div class="form-group">
+                <div class="col-12 col-sm-12 col-lg-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="input-group margin-left1">Assign Members</div><!-- /input-group -->
+                                </div><!-- /.col-lg-6 -->
+                            </div><!-- /.row -->
+                        </div>
+                        <table class="table">
+                            <tr>
+                                <th>Members</th>
+                                <th>Project Start Date</th>
+                                <th>Role</th>
+                                <th>Hourly Rate</th>
+                            </tr>
+                            @for (int i = 0; i < Model.AllCutdownMembers.Count; i++)
+                            {
+                                <tr>
+                                    <td style="min-width:250px;">
+                                        @*@Html.CheckBoxFor(m => m.AllCutdownMembers[i].MemberAlreadyAssigned, new {@checked = m.AllCutdownMembers[i].MemberAlreadyAssigned})*@
+                                        @Html.CheckBoxFor(m => m.AllCutdownMembers[i].IsAssigned)
+                                        @Html.HiddenFor(m => m.AllCutdownMembers[i].MemberAlreadyExists)
+                                        @Html.DisplayFor(m => m.AllCutdownMembers[i].MemberName)
+                                        @Html.HiddenFor(m => m.AllCutdownMembers[i].MemberId)
+                                        @Html.HiddenFor(m => m.AllCutdownMembers[i].ProjectId)
+                                        @Html.HiddenFor(m => m.AllCutdownMembers[i].MemberToProjectId)
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(m=> m.AllCutdownMembers[i].AssignDate)
+                                        @Html.ValidationMessageFor(m => m.AllCutdownMembers[i].AssignDate)
+                                    </td>
+                                    <td>
+                                        @Html.DropDownListFor(m => m.AllCutdownMembers[i].RoleId, new SelectList(Model.Role, "MemberRoleId", "MemberRoleName", Model.AllCutdownMembers[i].RoleId), new {@class = "form-control", style="width:73%;height:30px;"})
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(m=> m.AllCutdownMembers[i].Rate, new {@class = "gridRateTextbox"})
+                                        @Html.ValidationMessageFor(m=> m.AllCutdownMembers[i].Rate)
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-6 col-md-offset-1 col-md-pull-1">
+                    <button type="button" class="btn btn-primary backttoindex" data-url='@Url.Action("Index")'>Back to List</button>
+                    @if (Model.AllCutdownMembers.Count > 0)
+                    {
+                        <button type="submit" class="btn btn-success">Assign</button>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+<script>
+    $(document).on("click", ".backttoindex", function (e) {
+        var urlToExec = $(this).data('url');
+        //alert(urlToExec);
+        window.location.href = "@Url.Action("Index")";
+    });
+</script>

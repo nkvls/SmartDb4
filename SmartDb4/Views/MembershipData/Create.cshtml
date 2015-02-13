@@ -1,0 +1,1061 @@
+﻿
+@using SmartDb4.Extensions
+@using SmartDb4.Helpers
+@model SmartDb4.Models.Member
+
+@{
+    ViewBag.Title = "Member";
+}
+
+<div class="pagelayout">
+    <div class="inline-display">
+        <div class="managemembers"></div>
+        <div class="manageprojectHeader"><h3>Referral Form</h3></div>
+    </div>
+    <div>
+        <div class="pull-left">
+            <div class="triangleRight" style="float:right;border-color: #FFF #FFF #FFF #6085c6 !important;"></div>
+            <div class="rectangle" style="float:right;background: #6085c6 !important">@Html.ActionLink("Member", "Index", null, new { style = "color:white;text-decoration: none"})</div>
+        </div>
+   
+        <div style="float:left">
+            <div class="triangleLeft pull-left"></div>
+            <div class="rectangle pull-left">Create</div>
+            <div class="triangleRight pull-left"></div>
+        </div>
+    </div>
+    <div style="clear: both;height:20px;"></div>
+    @*<ol class="breadcrumb">
+        <li>@Html.ActionLink("Membership", "Index")</li>
+        <li class="active">Create</li>
+    </ol>*@
+    
+        @{
+            if (ViewBag.Error != null)
+            {
+            <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <strong>Error!</strong> @ViewBag.Error
+            </div>
+            }
+        <div class="alert alert-danger alert-dismissable hide" id="deleteAlert">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <div id="errMsg"></div>
+        </div>
+        }
+
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.AgentDetails.FirstName)
+        @Html.HiddenFor(model => model.AgentDetails.LastName)
+        @Html.HiddenFor(model => model.AgentDetails.Password)
+        @Html.HiddenFor(model => model.AgentDetails.UserName)
+        
+        <div class="form-horizontal">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <div class="alert alert-info alert-dismissable">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <strong>Note : Your session will expire in 2 hours. Please note, you can save this page at any time by pressing 'Save' button at the bottom the page and
+                    you can log in at a later date to complete and submit the form</strong>
+                    </div>
+                </div>
+            </div>
+            
+
+            @*Applicant Details*@
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Applicant Details</div>    
+                        <div class="panel-body labelfont">
+                            <div class="row form-group">
+                                <span class="col-sm-1 padding-top05">Name<span class="textRed"> *</span></span>
+                                <div class="col-sm-4">
+                                    @Html.EditorFor(model => model.MemberName)
+                                    @Html.ValidationMessageFor(model => model.MemberName)
+                                </div>
+                                <span class="col-sm-1 padding-top05 col-sm-push-1">Gender</span>
+                                <div class="col-sm-4 col-sm-push-1">
+                                    @Html.DropDownList("GenderId", null, new { @class = "form-control newCombo" })
+                                    @Html.ValidationMessageFor(model => model.GenderId)
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <span class="col-sm-2 padding-top05">Address1<span class="textRed"> *</span></span>
+                                <div class="col-sm-3 col-sm-pull-1">
+                                    @Html.EditorFor(model => model.Address1)
+                                    @Html.ValidationMessageFor(model => model.Address1)
+                                </div>
+                                <span class="col-sm-1 padding-top05 col-sm-push-1">Address2</span>
+                                <div class="col-sm-4 col-sm-push-1">
+                                    @Html.EditorFor(model => model.Address2)
+                                    @Html.ValidationMessageFor(model => model.Address2)
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <span class="col-sm-1 padding-top05">City<span class="textRed"> *</span></span>
+                                <div class="col-sm-4">
+                                    @Html.EditorFor(model => model.City)
+                                    @Html.ValidationMessageFor(model => model.City)
+                                </div>
+                                <span class="col-sm-2 padding-top05 col-sm-push-1">Date of birth</span>
+                                <div class="col-sm-3">
+                                    @Html.EditorFor(model => model.DateOfBirth)
+                                    @Html.ValidationMessageFor(model => model.DateOfBirth)
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <span class="padding-top05 col-sm-1">Home Tel</span>
+                                <div class="col-sm-4">
+                                    @Html.EditorFor(model => model.HomeTel)
+                                    @*<span class="labelfont">format xxx-xxx-xxxx</span>*@
+                                    @Html.ValidationMessageFor(model => model.HomeTel)
+                                </div>
+                                <span class=" padding-top05 col-sm-1 col-sm-push-1">Mobile</span>
+                                <div class="col-sm-4 col-sm-push-1">
+                                    @Html.EditorFor(model => model.MobileTel)
+                                    @Html.ValidationMessageFor(model => model.MobileTel)
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <span class="col-sm-2 padding-top05">Post Code</span>
+                                <div class="col-sm-3 col-sm-pull-1">
+                                    @Html.EditorFor(model => model.PostCode)
+                                    @Html.ValidationMessageFor(model => model.PostCode)
+                                </div>
+                                <span class="col-sm-1 padding-top05 col-sm-push-1">Email</span>
+                                <div class="col-sm-4 col-sm-push-1">
+                                    @Html.EditorFor(model => model.Email)
+                                    @Html.ValidationMessageFor(model => model.Email)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*Referrer Details*@
+            <div class="form-group">
+                 <div class="col-sm-12 col-lg-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Referrer Details</div>    
+                        <div class="panel-body labelfont">
+                            <div class="row form-group">
+                                <span class="col-sm-2 padding-top05">Load Referrer</span>
+                                @if (User.IsInRole("admin") || User.IsInRole("staff"))
+                                {
+                                    <div class="col-sm-4 col-sm-pull-1">
+                                        @Html.DropDownList("AgentId", null, new { @class = "form-control newCombo", id = "selectreferee" })
+                                    </div>
+                                }
+                            </div>
+                            <div class="row form-group">
+                                <span class="col-sm-2 padding-top05">Referrer Name</span>
+                                <div class="col-sm-4 col-sm-pull-1">
+                                    @Html.TextBoxFor(model => model.AgentDetails.FullName, new { @readonly = "readonly", id = "agentFullName" })
+                                    @Html.ValidationMessageFor(model => model.AgentDetails.FullName)
+                                </div>
+                                <span class="col-sm-1 padding-top05">Agency</span>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(model => model.AgentDetails.Agency, new { @readonly = "readonly", id = "agentAgency" })
+                                    @Html.ValidationMessageFor(model => model.AgentDetails.Agency)
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <span class="col-sm-1 padding-top05">Address1</span>
+                                <div class="col-sm-5">
+                                    @Html.TextBoxFor(model => model.AgentDetails.Address1, new { @readonly = "readonly", id = "agentAddress1" })
+                                    @Html.ValidationMessageFor(model => model.AgentDetails.Address1)
+                                </div>
+                                <span class="col-sm-1 padding-top05">Address2</span>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(model => model.AgentDetails.Address2, new { @readonly = "readonly", id = "agentAddress2" })
+                                    @Html.ValidationMessageFor(model => model.AgentDetails.Address2)
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <span class="col-sm-1 padding-top05">City</span>
+                                <div class="col-sm-5">
+                                    @Html.TextBoxFor(model => model.AgentDetails.City, new { @readonly = "readonly", id = "agentCity" })
+                                    @Html.ValidationMessageFor(model => model.AgentDetails.City)
+                                </div>
+                                <span class="col-sm-2 padding-top05">Post Code</span>
+                                <div class="col-sm-4 col-sm-pull-1">
+                                    @Html.TextBoxFor(model => model.AgentDetails.PostCode, new { @readonly = "readonly", id = "agentPostCode" })
+                                    @Html.ValidationMessageFor(model => model.AgentDetails.PostCode)
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <span class="col-sm-1 padding-top05">Work Tel</span>
+                                <div class="col-sm-5">
+                                    @Html.TextBoxFor(model => model.AgentDetails.WorkTelephone, new { @readonly = "readonly", id = "agentWorkTelephone" })
+                                    @Html.ValidationMessageFor(model => model.AgentDetails.WorkTelephone)
+                                </div>
+                                <span class="col-sm-1 padding-top05">Mobile</span>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(model => model.AgentDetails.MobileTelephone, new { @readonly = "readonly", id = "agentMobile" })
+                                    @Html.ValidationMessageFor(model => model.AgentDetails.MobileTelephone)
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <span class="col-sm-1 padding-top05">Relationship to client/patient</span>
+                                <div class="col-sm-5">
+                                    @Html.TextBoxFor(model => model.AgentDetails.RelationshipWithApplicant, new { id = "agentRelationship" })
+                                    @Html.ValidationMessageFor(model => model.AgentDetails.RelationshipWithApplicant)
+                                </div>
+                                <span class="col-sm-1 padding-top05">Email</span>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(model => model.AgentDetails.Email, new { @readonly = "readonly", id = "agentEmail" })
+                                    @Html.ValidationMessageFor(model => model.AgentDetails.Email)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             </div>
+
+            @*Other Contacts*@
+            <div class="form-group">
+                <div class="col-sm-12 col-lg-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Other Contacts</div>    
+                        <div class="panel-body labelfont">
+                            <div class="form-group">
+                                <div class="col-sm-6 col-lg-6">
+                                    <div class="control-label col-sm-4 col-sm-pull-1">
+                                        <b>Key/Social worker:</b>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-lg-6">Please tick here if the applicant does not have a key/social worker:
+                                     @Html.EditorFor(model => model.IsKeyOrSocialWorker)
+                                    @Html.ValidationMessageFor(model => model.IsKeyOrSocialWorker)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="control-label col-sm-1">Name</span>
+                                <div class="col-sm-2">
+                                    @Html.EditorFor(model => model.KeyWorkerName)
+                                    @Html.ValidationMessageFor(model => model.KeyWorkerName)
+                                </div>
+                                <span class="control-label col-sm-4">Agency</span>
+                                <div class="col-sm-5">
+                                    @Html.EditorFor(model => model.KeyWorkerAgency)
+                                    @Html.ValidationMessageFor(model => model.KeyWorkerAgency)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="control-label col-sm-1">Address1</span>
+                                <div class="col-sm-2">
+                                    @Html.EditorFor(model => model.KeyWorkerAddress1)
+                                    @Html.ValidationMessageFor(model => model.KeyWorkerAddress1)
+                                </div>
+                                <span class="control-label col-sm-4">Address2</span>
+                                <div class="col-sm-5">
+                                    @Html.EditorFor(model => model.KeyWorkerAddress2)
+                                    @Html.ValidationMessageFor(model => model.KeyWorkerAddress2)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="control-label col-sm-1">City</span>
+                                <div class="col-sm-2">
+                                    @Html.EditorFor(model => model.KeyWorkerCity)
+                                    @Html.ValidationMessageFor(model => model.KeyWorkerCity)
+                                </div>
+                                <span class="control-label col-sm-4">Post Code</span>
+                                <div class="col-sm-5">
+                                    @Html.EditorFor(model => model.KeyWorkerPostCode)
+                                    @Html.ValidationMessageFor(model => model.KeyWorkerPostCode)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="control-label col-sm-1">Work Tel</span>
+                                <div class="col-sm-2">
+                                   @Html.EditorFor(model => model.KeyWorkerHomeTel)
+                                    @Html.ValidationMessageFor(model => model.KeyWorkerHomeTel)
+                                </div>
+                                <span class="control-label col-sm-4">Mobile</span>
+                                <div class="col-sm-5">
+                                   @Html.EditorFor(model => model.KeyWorkerMobileTel)
+                                    @Html.ValidationMessageFor(model => model.KeyWorkerMobileTel)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="control-label col-sm-1">Email</span>
+                                <div class="col-sm-2">
+                                   @Html.EditorFor(model => model.KeyWorkerEmail)
+                                    @Html.ValidationMessageFor(model => model.KeyWorkerEmail)
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-6 col-lg-6">
+                                    <div class="control-label col-sm-2">
+                                        <b>Consultant:</b>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-6 col-lg-6">
+                                    Please tick here if the applicant does not have a Consultant:
+                                     @Html.EditorFor(model => model.IsConsultant)
+                                    @Html.ValidationMessageFor(model => model.IsConsultant)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="control-label col-sm-1">Name</span>
+                                <div class="col-sm-2">
+                                    @Html.EditorFor(model => model.ConsultantName)
+                                    @Html.ValidationMessageFor(model => model.ConsultantName)
+                                </div>
+                                <span class="control-label col-sm-4">Agency</span>
+                                <div class="col-sm-5">
+                                    @Html.EditorFor(model => model.ConsultantAgency)
+                                    @Html.ValidationMessageFor(model => model.ConsultantAgency)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="control-label col-sm-1">Address1</span>
+                                <div class="col-sm-2">
+                                    @Html.EditorFor(model => model.ConsultantAddress1)
+                                    @Html.ValidationMessageFor(model => model.ConsultantAddress1)
+                                </div>
+                                <span class="control-label col-sm-4">Address2</span>
+                                <div class="col-sm-5">
+                                    @Html.EditorFor(model => model.ConsultantAddress2)
+                                    @Html.ValidationMessageFor(model => model.ConsultantAddress2)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="control-label col-sm-1">City</span>
+                                <div class="col-sm-2">
+                                    @Html.EditorFor(model => model.ConsultantCity)
+                                    @Html.ValidationMessageFor(model => model.ConsultantCity)
+                                </div>
+                                <span class="control-label col-sm-4">Post Code</span>
+                                <div class="col-sm-5">
+                                    @Html.EditorFor(model => model.ConsultantPostCode)
+                                    @Html.ValidationMessageFor(model => model.ConsultantPostCode)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="control-label col-sm-1">Work Tel</span>
+                                <div class="col-sm-2">
+                                   @Html.EditorFor(model => model.ConsultantHomeTel)
+                                    @Html.ValidationMessageFor(model => model.ConsultantHomeTel)
+                                </div>
+                                <span class="control-label col-sm-4">Mobile</span>
+                                <div class="col-sm-5">
+                                   @Html.EditorFor(model => model.ConsultantMobileTel)
+                                    @Html.ValidationMessageFor(model => model.ConsultantMobileTel)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="control-label col-sm-1">Email</span>
+                                <div class="col-sm-2">
+                                   @Html.EditorFor(model => model.ConsultantEmail)
+                                    @Html.ValidationMessageFor(model => model.ConsultantEmail)
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-6 col-lg-6">
+                                    <div class="control-label col-sm-2">
+                                        <b>CPN:</b>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-6 col-lg-6">Please tick here if the applicant does not have a CPN:
+                                     @Html.EditorFor(model => model.IsCpn)
+                                    @Html.ValidationMessageFor(model => model.IsCpn)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="control-label col-sm-1">Name</span>
+                                <div class="col-sm-2">
+                                    @Html.EditorFor(model => model.CpnName)
+                                    @Html.ValidationMessageFor(model => model.CpnName)
+                                </div>
+                                <span class="control-label col-sm-4">Agency</span>
+                                <div class="col-sm-5">
+                                    @Html.EditorFor(model => model.CpnAgency)
+                                    @Html.ValidationMessageFor(model => model.CpnAgency)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="control-label col-sm-1">Address1</span>
+                                <div class="col-sm-2">
+                                    @Html.EditorFor(model => model.CpnAddress1)
+                                    @Html.ValidationMessageFor(model => model.CpnAddress1)
+                                </div>
+                                <span class="control-label col-sm-4">Address2</span>
+                                <div class="col-sm-5">
+                                    @Html.EditorFor(model => model.CpnAddress2)
+                                    @Html.ValidationMessageFor(model => model.CpnAddress2)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="control-label col-sm-1">City</span>
+                                <div class="col-sm-2">
+                                    @Html.EditorFor(model => model.CpnCity)
+                                    @Html.ValidationMessageFor(model => model.CpnCity)
+                                </div>
+                                <span class="control-label col-sm-4">Post Code</span>
+                                <div class="col-sm-5">
+                                    @Html.EditorFor(model => model.CpnPostCode)
+                                    @Html.ValidationMessageFor(model => model.CpnPostCode)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="control-label col-sm-1">Work Tel</span>
+                                <div class="col-sm-2">
+                                   @Html.EditorFor(model => model.CpnHomeTel)
+                                    @Html.ValidationMessageFor(model => model.CpnHomeTel)
+                                </div>
+                                <span class="control-label col-sm-4">Mobile</span>
+                                <div class="col-sm-5">
+                                   @Html.EditorFor(model => model.CpnMobileTel)
+                                    @Html.ValidationMessageFor(model => model.CpnMobileTel)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="control-label col-sm-1">Email</span>
+                                <div class="col-sm-2">
+                                   @Html.EditorFor(model => model.CpnEmail)
+                                    @Html.ValidationMessageFor(model => model.CpnEmail)
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-6 col-sm-6 col-lg-6">
+                                    <div class="control-label col-sm-2">
+                                        <b>Other:</b>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-sm-6 col-lg-6">
+                                    Please specify: 
+                                    @Html.EditorFor(model => model.OtherSpecify)
+                                    @Html.ValidationMessageFor(model => model.OtherSpecify)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="control-label col-sm-1">Name</span>
+                                <div class="col-sm-2">
+                                    @Html.EditorFor(model => model.OtherName)
+                                    @Html.ValidationMessageFor(model => model.OtherName)
+                                </div>
+                                <span class="control-label col-sm-4">Agency</span>
+                                <div class="col-sm-5">
+                                    @Html.EditorFor(model => model.OtherAgency)
+                                    @Html.ValidationMessageFor(model => model.OtherAgency)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="control-label col-sm-1">Address1</span>
+                                <div class="col-sm-2">
+                                    @Html.EditorFor(model => model.OtherAddress1)
+                                    @Html.ValidationMessageFor(model => model.OtherAddress1)
+                                </div>
+                                <span class="control-label col-sm-4">Address2</span>
+                                <div class="col-sm-5">
+                                    @Html.EditorFor(model => model.OtherAddress2)
+                                    @Html.ValidationMessageFor(model => model.OtherAddress2)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="control-label col-sm-1">City</span>
+                                <div class="col-sm-2">
+                                    @Html.EditorFor(model => model.OtherCity)
+                                    @Html.ValidationMessageFor(model => model.OtherCity)
+                                </div>
+                                <span class="control-label col-sm-4">Post Code</span>
+                                <div class="col-sm-5">
+                                    @Html.EditorFor(model => model.OtherPostCode)
+                                    @Html.ValidationMessageFor(model => model.OtherPostCode)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="control-label col-sm-1">Work Tel</span>
+                                <div class="col-sm-2">
+                                   @Html.EditorFor(model => model.OtherHomeTel)
+                                    @Html.ValidationMessageFor(model => model.OtherHomeTel)
+                                </div>
+                                <span class="control-label col-sm-4">Mobile</span>
+                                <div class="col-sm-5">
+                                   @Html.EditorFor(model => model.OtherMobileTel)
+                                    @Html.ValidationMessageFor(model => model.OtherMobileTel)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="control-label col-sm-1">Email</span>
+                                <div class="col-sm-2">
+                                   @Html.EditorFor(model => model.OtherEmail)
+                                    @Html.ValidationMessageFor(model => model.OtherEmail)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*About your Client/Patient*@
+            <div class="form-group">
+                <div class="col-sm-12 col-lg-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">About your Client/Patient</div>
+                        <div class="panel-body labelfont">
+                            <div class="form-group">
+                                <div class="col-sm-12 col-sm-12 col-lg-12">
+                                    1. What is your client/patient's mental illness (primary diagnosis)?
+                                </div>
+                                <div class="col-sm-12 col-sm-12 col-lg-12">
+                                    @Html.TextAreaFor(model => model.ClientMentalIllness, new { @class = "membershipTextarea" })
+                                    @Html.ValidationMessageFor(model => model.ClientMentalIllness)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12 col-sm-12 col-lg-12">
+                                    2. Please provide any reportable symptoms of the new member becoming unwell.
+                                </div>
+                                <div class="col-sm-12 col-sm-12 col-lg-12">
+                                    @Html.TextAreaFor(model => model.NewMemberReportableSymptoms, new { @class = "membershipTextarea" })
+                                    @Html.ValidationMessageFor(model => model.NewMemberReportableSymptoms)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12 col-sm-12 col-lg-12">
+                                    3. What are your reasons for referring your client/patient to SMART?
+                                </div>
+                                <div class="col-sm-12 col-sm-12 col-lg-12">
+                                    @Html.TextAreaFor(model => model.ReasonForReferringToSmart, new { @class = "membershipTextarea" })
+                                    @Html.ValidationMessageFor(model => model.ReasonForReferringToSmart)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12 col-sm-12 col-lg-12">
+                                    4. Is the applicant subject to the Care Programme Approach?<span class="textRed"> *</span><br />
+                                    <div class="col-6 col-sm-6 col-lg-6"><i>if yes, please provide a copy of the most recent CPA</i></div>
+                                    <div class="col-6 col-sm-2">
+                                        @*@Html.EditorFor(model => model.CareProgramApproach)*@
+                                        @Html.DropDownListFor(m => m.CareProgramApproach, BooleanToListConverter.SelectList(null, "Yes", "No"), new { @class = "form-control newCombo" })
+                                        @Html.ValidationMessageFor(model => model.CareProgramApproach)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                 <div class="col-sm-12">
+                                     5. Is the applicant eligible for Care Management?<span class="textRed"> *</span><br />
+                                    <div class="col-sm-6"><i>if yes, please provide the most recent FACS assessment</i></div>
+                                    <div class="col-sm-2">
+                                        @*@Html.EditorFor(model => model.CareManagementEligible)*@
+                                        @Html.DropDownListFor(m => m.CareManagementEligible, BooleanToListConverter.SelectList(null, "Yes", "No"), new { @class = "form-control newCombo" })
+                                        @Html.ValidationMessageFor(model => model.CareManagementEligible)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    6. Has the Risk Assessment been carried out in the last 12 months?<span class="textRed"> *</span><br />
+                                    <div class="col-sm-6"><i>if yes, provide enclose a copy of the risk assessment</i></div>
+                                    @*<div class="col-6 col-sm-6 col-lg-6"><i>if no, please enclose the most recent risk assessment or a doctor's letter</i></div>*@
+                                    <div class="col-sm-2">
+                                        @*@Html.EditorFor(model => model.RiskAssessmentDone)*@
+                                        @Html.DropDownListFor(m => m.RiskAssessmentDone, BooleanToListConverter.SelectList(null, "Yes", "No"), new { @class = "form-control newCombo" })
+                                        @Html.ValidationMessageFor(model => model.RiskAssessmentDone)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group padding-top1">
+                                 <div class="col-sm-12">
+                                     Please note: We are unable to accept referrals without a Risk Assessment that is less than 12 months old <br /><br />
+                                    <i><div>Supplementary documents can be uploaded at the bottom of this form. Alternatively you can submit them by:</div></i>
+                                    <address>
+                                        <i><div>Email:<a href="mailto:referrals@smartlondon.org.uk">referrals@smartlondon.org.uk</a></div></i>
+                                        <i><div>Fax: 020 7376 7892</div></i>
+                                        <i><div>Post: SMART, The Basement, 15 Gertrude Street, London, SW10 0JN</div></i>
+                                    </address>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*Files Uploaded*@
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Files Upload (Supported types : pdf,doc,docx,xls,xlsx,txt)</div>
+                        <div class="panel-body labelfont">
+                            <section>
+                                <h5>Upload multiple files (Selected files will be uploaded on saving the record)</h5>
+                                <input type="file" class="btn btn-warning" name="Files" id="Files" accept=".pdf" multiple />
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*You and SMART*@
+            <div class="form-group">
+                <div class="col-sm-12 col-lg-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">You and SMART</div>    
+                        <div class="panel-body labelfont">
+                            <div class="form-group">
+                                <div class="col-sm-12 col-lg-12">
+                                    <div>If you are completing this without your client/patient being present, please leave it blank. We will complete this box during the induction</div>
+                                    <br /><div>These questions are to help us understand how we can assist your recovery. We will speak in more details in your induction meeting.</div>
+                                    <br />
+                                    <span class="col-sm-3">
+                                        Why do you want to join SMART?
+                                    </span>
+                                </div>
+                                <div class="col-sm-12">
+                                    @Html.TextAreaFor(model => model.ReasonReferredToSmart, new { @class = "membershipTextarea" })
+                                    @Html.ValidationMessageFor(model => model.ReasonReferredToSmart)
+                                </div>
+                            </div>
+                            <div class="form-group padding-top1">
+                                <div class="col-sm-12">
+                                    <div class="col-sm-5">
+                                        Are you planning to return to employment at some stage?<br />
+                                        <i>&nbsp;&nbsp;&nbsp;&nbsp;if yes, what type of employment are you most interested in?</i>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        @*@Html.EditorFor(model => model.ReturnToEmployment)*@
+                                        @Html.DropDownListFor(m => m.ReturnToEmployment, BooleanToListConverter.SelectList(null, "Yes", "No"), new { @class = "form-control newCombo" })
+                                        @Html.ValidationMessageFor(model => model.ReturnToEmployment)
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    @Html.TextAreaFor(model => model.TypeOfEmploymentInterested, new { @class = "membershipTextarea" })
+                                    @Html.ValidationMessageFor(model => model.TypeOfEmploymentInterested)
+                                </div>
+                            </div>
+                            <div class="form-group padding-top1">
+                                <div class="col-sm-12">
+                                    <div class="col-sm-5">
+                                        Are you interested in doing some sort of training or study?<br />
+                                        <i>&nbsp;&nbsp;&nbsp;&nbsp;if yes, what are of training or study are you most interested in?</i>
+                                    </div>
+                                    <div class="col-sm-2">                                        
+                                        @*@Html.EditorFor(model => model.TrainingOrStudy)*@
+                                        @Html.DropDownListFor(m => m.TrainingOrStudy, BooleanToListConverter.SelectList(null, "Yes", "No"), new { @class = "form-control newCombo" })
+                                        @Html.ValidationMessageFor(model => model.TrainingOrStudy) 
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-lg-12">
+                                    @Html.TextAreaFor(model => model.AreaOfTrainingOrStudy, new { @class = "membershipTextarea" })
+                                    @Html.ValidationMessageFor(model => model.AreaOfTrainingOrStudy)
+                                </div>
+                            </div>
+                            <div class="form-group padding-top1">
+                                <div class="col-sm-12">
+                                    Do you have any other condition that we should be aware of(e.g. diabetes, epilepsy)?
+                                </div>
+                                <div class="col-sm-12">
+                                    @Html.TextAreaFor(model => model.AnyOtherCondition, new { @class = "membershipTextarea" })
+                                    @Html.ValidationMessageFor(model => model.AnyOtherCondition)
+                                </div>
+                            </div>
+                            <div class="form-group padding-top1">
+                                <div class="col-sm-12">
+                                    <div class="col-sm-5">
+                                        The member has signed the contract with SMART – <br />
+                                        <i>&nbsp;&nbsp;&nbsp;&nbsp;please upload a copy of the signed contract</i>
+                                    </div>
+                                    <div class="col-sm-2">                                        
+                                        @Html.EditorFor(m => m.IsContractSigned)
+                                        @Html.ValidationMessageFor(model => model.IsContractSigned) 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*Monitoring Information*@
+            <div class="form-group">
+                <div class="col-sm-12 col-lg-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Monitoring Information</div>    
+                        <div class="panel-body labelfont">
+                            The following information is for statistical purposes only. The information has no effect on an individual being offered work or training at SMART, 
+                            but is required by The Royal Borough of Kensington and Chelsea to monitor the service we provide.
+                            <div class="form-group">
+                                <span class="control-label col-sm-2 labelfont">Which Area do you live in?</span>
+                                <div class="col-sm-4">
+                                     @Html.DropDownList("LivingAreaId", null, new { @class = "form-control", style = "width:100%;height:30px;" })
+                                    @Html.ValidationMessageFor(model => model.LivingAreaId)
+                                </div>
+                                <span class="control-label col-sm-2 labelfont">Other Living Area</span>
+                                <div class="col-sm-3">
+                                   @Html.EditorFor(model => model.OtherLivingArea)
+                                   @Html.ValidationMessageFor(model => model.OtherLivingArea)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="control-label col-sm-2 labelfont">What do you consider to be your ethnic origin?</span>
+                                <div class="col-sm-4">
+                                    @Html.DropDownList("EthnicityId", null, new { @class = "form-control", style="width:100%;height:30px;" })
+                                    @*@Html.DropDownGroupListFor(m => m.GroupedEthnicityId, Model.GroupedEthnicityOptions, "Select an Ethnicity", new { @data_val = "true", @data_val_required = "The Ethnicity field is required.", @class = "form-control", style = "width:100%;height:30px;" })*@
+                                    @*@Html.DropDownGroupListFor(m => m.GroupedEthnicityId, @ViewBag.GroupedEthnicityId, "-- Select --", new { @data_val = "true", @data_val_required = "The Name field is required." })*@
+                                    @Html.ValidationMessageFor(model => model.EthnicityId)
+                                </div>
+                                <span class="control-label col-sm-2 labelfont">Other (Please specify)</span>
+                                <div class="col-sm-3">
+                                    @Html.EditorFor(model => model.OtherEthnicOrigin)
+                                    @Html.ValidationMessageFor(model => model.OtherEthnicOrigin)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <span class="control-label col-sm-2 labelfont">What is your sexual orientation?</span>
+                                <div class="col-sm-2">
+                                    @Html.DropDownList("SexualOrientationId", null, new { @class = "form-control", style = "width:100%;height:30px;" })
+                                    @Html.ValidationMessageFor(model => model.SexualOrientationId)
+                                </div>
+                                @*<span class="control-label col-sm-3 labelfont">Other (Please specify)</span>
+                                <div class="col-sm-3">
+                                    @Html.EditorFor(model => model.OtherEthnicOrigin)
+                                    @Html.ValidationMessageFor(model => model.OtherEthnicOrigin)
+                                </div>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*Important Information / REFERRER AGREEMENT *@
+            <div class="form-group">
+                 <div class="col-sm-12 col-lg-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Referrer Agreement</div>    
+                        <div class="panel-body labelfont">
+                            <div class="form-group">
+                                <div class="col-sm-12 col-lg-12">
+                                    <div>We are contracted by RBKC to provide day services and a programme of evening and weekend activities. We are data protection registered.</div>
+                                    <br />
+                                    <div>If you feel unable to share the information we have requested then please let us know why and we will do what we can to facilitate the
+                                    referral of your client. Alternatively, you may wish to seek clarification about the data protection issue you face with someone on the 
+                                    mental health commissioning team at RBKC/Westminster. </div>
+                                    <br />
+                                    <div>Unfortunately, until we have reached an explicit agreement we will be unable to accept your client as a member of SMART.</div>
+                                    <br />
+                                </div><div style="height:80px;">&nbsp;</div>
+                                <div class="col-sm-6 col-lg-6">
+                                    I have fully completed all sections of the referral form<span class="textRed"> *</span>
+                                </div>
+                                <div class="col-sm-6 col-lg-6">
+                                    @Html.EditorFor(model => model.CompletedAllSection)
+                                    @Html.ValidationMessageFor(model => model.CompletedAllSection)
+                                </div>
+                                <div class="col-sm-6 col-lg-6">
+                                    I have enclosed a full risk assessment or doctor's letter<span class="textRed"> *</span>
+                                </div>
+                                <div class="col-sm-6 col-lg-6">
+                                    @Html.EditorFor(model => model.EnclosedFullRiskAssessment)
+                                    @Html.ValidationMessageFor(model => model.EnclosedFullRiskAssessment)
+                                </div>
+                                <div class="col-sm-6 col-lg-6">
+                                    I have enclosed a copy of my client/patient's CPA
+                                </div>
+                                <div class="col-sm-2">
+                                    @* @Html.EditorFor(model => model.EnclosedCopyOfCpa)*@
+                                    @Html.DropDownListFor(m => m.EnclosedCopyOfCpa, BooleanToListConverter.SelectList(null, "Yes", "No"), new { @class = "form-control newCombo" })
+                                    @Html.ValidationMessageFor(model => model.EnclosedCopyOfCpa)
+                                </div>
+                            </div>                    
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*STAFF Section*@
+            <div class="form-group">
+                @if (User.IsInRole("admin") || User.IsInRole("staff"))
+                {
+                    <div class="col-sm-12 col-lg-12">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">STAFF Section</div>    
+                            <div class="panel-body labelfont">
+                                <div class="form-group">
+                                    <div class="col-sm-2">Notes</div>
+                                    <div class="col-sm-2">
+                                        Broadcast as Alert
+                                        @Html.EditorFor(model => model.BroadCastAsAlert)
+                                        @Html.ValidationMessageFor(model => model.BroadCastAsAlert)
+                                    </div>
+                                    <div class="col-sm-2 col-lg-2">
+                                        Alert Valid Until
+                                    </div>
+                                    <div class="col-sm-6 col-lg-6" style="margin-bottom:5px;">
+                                        @Html.EditorFor(model => model.AlertValidDate)
+                                        @Html.ValidationMessageFor(model => model.AlertValidDate)
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <span><i>Use to highlight projects that member is interested in on the dashboard</i></span>
+                                        @Html.TextAreaFor(model => model.Note, new { @class = "textAreaWidth" })
+                                        @Html.ValidationMessageFor(model => model.Note)
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                        <div class="col-sm-12 col-lg-12">Vocational Outcome</div>
+                                    <div class="col-sm-12 col-lg-12">
+                                        @Html.TextAreaFor(model => model.VocationalOutcome, new { @class = "textAreaWidth" })
+                                        @Html.ValidationMessageFor(model => model.VocationalOutcome)
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                        <div class="col-sm-12 col-lg-12">Soft Outcome</div>
+                                    <div class="col-sm-12 col-lg-12">
+                                        @Html.TextAreaFor(model => model.SoftOutcome, new { @class = "textAreaWidth" })
+                                        @Html.ValidationMessageFor(model => model.SoftOutcome)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            
+            @*ADMIN Section*@
+            <div class="form-group">
+                @if (User.IsInRole("admin"))
+                {
+                    <div class="col-sm-12 col-lg-12">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">ADMIN Section</div>    
+                            <div class="panel-body labelfont">
+                                <div class="form-group">
+                                    <div class="col-2 col-sm-2 col-lg-2">Submit Date</div>
+                                    <div class="col-4 col-sm-4 col-lg-4">
+                                       @Html.TextBoxFor(model => model.FormSubmitDate, new { disabled = "disabled", @readonly = "readonly" })
+                                        @Html.ValidationMessageFor(model => model.FormSubmitDate)
+                                    </div>
+                                    <div class="col-2 col-sm-2 col-lg-2">Induction Date</div>
+                                    <div class="col-4 col-sm-4 col-lg-4 col-sm-pull-1">                                        
+                                        @Html.EditorFor(model => model.InductionDate)
+                                        @Html.ValidationMessageFor(model => model.InductionDate)
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-2 col-lg-2">Funding</div>
+                                    <div class="col-sm-4 col-lg-4">
+                                        @Html.DropDownList("FundingResponsibilityId", null, new { @class = "form-control", style = "width:93%;height:30px;" })
+                                        @Html.ValidationMessageFor(model => model.FundingResponsibilityId)
+                                    </div>
+                                    <div class="col-sm-2 col-lg-2">Other (Specify)</div>
+                                    <div class="col-sm-4 col-lg-4 col-md-pull-1">
+                                        @Html.EditorFor(model => model.OtherFundingResponsibility)
+                                        @Html.ValidationMessageFor(model => model.OtherFundingResponsibility)
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-2 col-lg-2">Nomination</div>
+                                    <div class="col-sm-4 col-lg-4">
+                                        @Html.DropDownList("NominationId", null, new { @class = "form-control", style = "width:93%;height:30px;" })
+                                        @Html.ValidationMessageFor(model => model.NominationId)
+                                    </div>
+                                    <div class="col-sm-2 col-lg-2">Referral Type</div>
+                                    <div class="col-sm-4 col-lg-4 col-md-pull-1">
+                                        @Html.DropDownList("ReferralTypeId", null, new { @class = "form-control", style = "width:93%;height:30px;" })
+                                        @Html.ValidationMessageFor(model => model.ReferralTypeId)
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-2 col-lg-2">Start Date</div>
+                                    <div class="col-sm-4 col-lg-4">
+                                        @Html.EditorFor(model => model.StartDate)
+                                        @Html.ValidationMessageFor(model => model.StartDate)
+                                    </div>
+                                    <div class="col-sm-2 col-lg-2">Exit Date</div>
+                                    <div class="col-sm-4 col-lg-4 col-md-pull-1">
+                                        @Html.EditorFor(model => model.ExitDate)
+                                        @Html.ValidationMessageFor(model => model.ExitDate)
+                                    </div>
+                                </div>
+                                <div class="form-group">                                    
+                                    <div class="col-sm-4 col-lg-4">Last Member Review / Recovery Start Date</div>
+                                    <div class="col-sm-4 col-lg-4">
+                                        @Html.EditorFor(model => model.LastMemberReviewDate)
+                                        @Html.ValidationMessageFor(model => model.LastMemberReviewDate)
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                     <div class="col-sm-12 col-lg-12">Reason for Leaving or Unsuccessful Referral</div>
+                                    <div class="col-sm-12 col-lg-12">
+                                        @Html.TextAreaFor(model => model.ReasonForLeaving, new { style = "width: 99%;" })
+                                        @Html.ValidationMessageFor(model => model.ReasonForLeaving)
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                     <div class="col-sm-12 col-lg-12">Summary of Risk</div>
+                                    <div class="col-sm-12 col-lg-12">
+                                         @Html.TextAreaFor(model => model.SummaryOfRisk, new { style = "width: 99%;" })
+                                        @Html.ValidationMessageFor(model => model.SummaryOfRisk)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    //Project Membership
+                    <div class="col-sm-12 col-lg-12">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">Project Membership</div> 
+                                <div class="panel-body labelfont">
+                                    <div class="form-group">
+                                            @for (int i = 0; i < Model.ProjectMembership.Projects.Count; i++)
+                                            {
+                                            <div class="col-4 col-sm-4 col-lg-4" style="margin-left:10px;">
+                                                @Html.HiddenFor(m => m.ProjectMembership.Projects[i].ProjectId)
+                                                @Html.HiddenFor(m => m.ProjectMembership.Projects[i].MaxNoOfParticipants)
+                                                <p class="form-control-static">
+                                                    @Html.CheckBoxFor(m => m.ProjectMembership.Projects[i].AssignProjectToMemberNow, new { @disabled = "disabled" })
+                                                    @*@Html.TextBoxFor(m => m.ProjectMembership.Projects[i].ProjectName, new { @readonly = "true", @class = "TextBoxAsLabel" })*@
+                                                    @Html.DisplayFor(m => m.ProjectMembership.Projects[i].ProjectName)
+                                                </p>
+                                                @Html.HiddenFor(m => m.ProjectMembership.Projects[i].ProjectName)
+                                            </div>
+                                            }
+                                    </div>   
+                                </div>
+                        </div>
+                    </div>
+                    
+                    //ATTENDANCE        
+                    <div class="col-sm-12 col-lg-12">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">Attendance (Last 7 days)</div> 
+                            <table class="table">
+                                <tr>
+                                    <th>Monday</th>
+                                    <th>Tuesday</th>
+                                    <th>Wednesday</th>
+                                    <th>Thursday</th>
+                                    <th>Friday</th>
+                                    <th>Saturday</th>
+                                    <th>Sunday</th>
+                                </tr>
+                                 @for (int i = 0; i < Model.CurrentWeekAttendances.Count(); i++)
+                                 {
+                                     <tr>
+                                        <td class="padding-left1">
+                                            @Html.CheckBoxFor(m => m.CurrentWeekAttendances.ElementAt(i).Monday, new {@disabled = "disabled"})
+                                            @Html.HiddenFor(m =>m.CurrentWeekAttendances.ElementAt(i).MondayRate)
+                                        </td>
+                                        <td class="padding-left1">
+                                            @Html.CheckBoxFor(m => m.CurrentWeekAttendances.ElementAt(i).Tuesday, new {@disabled = "disabled"})
+                                            @Html.HiddenFor(m => m.CurrentWeekAttendances.ElementAt(i).TuesdayRate)
+                                        </td>
+                                        <td>
+                                            @Html.CheckBoxFor(m => m.CurrentWeekAttendances.ElementAt(i).Wednesday, new {@disabled = "disabled"})
+                                            @Html.HiddenFor(m => m.CurrentWeekAttendances.ElementAt(i).WednesdayRate)
+                                        </td>
+                                        <td>
+                                            @Html.CheckBoxFor(m => m.CurrentWeekAttendances.ElementAt(i).Thursday, new {@disabled = "disabled"})
+                                            @Html.HiddenFor(m => m.CurrentWeekAttendances.ElementAt(i).ThursdayRate)
+                                        </td>
+                                        <td>
+                                            @Html.CheckBoxFor(m => m.CurrentWeekAttendances.ElementAt(i).Friday, new {@disabled = "disabled"})
+                                            @Html.HiddenFor(m => m.CurrentWeekAttendances.ElementAt(i).FridayRate)
+                                        </td>
+                                        <td>
+                                            @Html.CheckBoxFor(m => m.CurrentWeekAttendances.ElementAt(i).Saturday, new {@disabled = "disabled"})
+                                            @Html.HiddenFor(m => m.CurrentWeekAttendances.ElementAt(i).SaturdayRate)
+                                        </td>
+                                        <td>
+                                            @Html.CheckBoxFor(m => m.CurrentWeekAttendances.ElementAt(i).Sunday, new {@disabled = "disabled"})
+                                            @Html.HiddenFor(m => m.CurrentWeekAttendances.ElementAt(i).SundayRate)
+                                        </td>
+                                    </tr>
+                                 }
+                            </table>
+                        </div>
+                    </div>
+                }
+            </div>
+        
+            @*The Referral Process / What Happens Next*@
+            <div class="form-group">
+                <div class="col-sm-12 col-lg-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">What Happens Next</div>
+                        <div class="panel-body labelfont">
+                            <ul>
+                                <li>Once this form is completed and we’ve been given the necessary paperwork, SMART then contacts you to arrange an induction</li>
+                                <li>You then contact your client to inform them about the induction</li>
+                                <li>You and your client attend the induction meeting at SMART</li>
+                                <li>During the induction, we discuss with the client/patient how SMART can help with the recovery, health and wellbeing, and then they make decisions about which project(s) they would like to do. At the end we have a tour of SMART and meet the rest of the staff</li>
+                                <li>Following the meeting, the new member receives a Member Handbook and Welcome Letter with the start dates of their projects</li>
+                                <li>6 Weeks after the induction, the new member meets with SMART staff for a Member Review to ensure their needs are being met and give feedback on their progress so far</li>
+                                <li>Throughout your client’s time at SMART, we will be on hand to provide information about their progression and wellbeing. And should we have any concerns we will contact you for advice and guidance</li>
+                                <li>Thank you for completing this form. We look forward to working with you and your client</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>            
+            
+            <br/>
+            <div class="form-group">
+                <div class="col-sm-12 col-lg-12 col-sm-12" style="margin-bottom: 10px;">
+                    <button type="button" class="btn btn-primary backttoindex" data-url='@Url.Action("Index")'>Back to List</button>
+                    <button type="submit" name="action:Save" value="Save" class="btn btn-success">Save</button>
+                    <button type="submit" name="action:Submit" value="Submit"  class="btn btn-success pull-right">Submit</button>
+                </div>                    
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    $(document).on("click", ".backttoindex", function (e) {
+        var urlToExec = $(this).data('url');
+        //alert(urlToExec);
+        window.location.href = "@Url.Action("Index")";
+    });
+
+    $('#selectreferee').change(function (e) {
+        //alert($('#selectreferee').val());
+        var urlToExec = "/MembershipData/LoadReferee?refereeId=" + $('#selectreferee').val();
+        //alert(urlToExec);
+        var token = $('input[name="__RequestVerificationToken"]').val();
+        var tokenadr = $('form[action="' + urlToExec + '"] input[name="__RequestVerificationToken"]').val();
+
+        var headers = {};
+        var headersadr = {};
+
+        headers['__RequestVerificationToken'] = token;
+        headersadr['__RequestVerificationToken'] = tokenadr;
+
+        $.ajax(
+            {
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                url: urlToExec,
+                dataType: "json",
+                data: "__RequestVerificationToken=" + token,
+                success: function (data) {
+                    var user = $.parseJSON(data);
+                    
+                    $('#agentFullName').val(user.FirstName + ' ' + user.LastName);
+                    $('#agentEmail').val(user.Email);
+                    $('#agentAgency').val(user.Agency);
+                    $('#agentAddress1').val(user.Address1);
+                    $('#agentAddress2').val(user.Address2);
+                    $('#agentCity').val(user.City);
+                    $('#agentPostCode').val(user.PostCode);
+                    $('#agentWorkTelephone').val(user.WorkTelephone);
+                    $('#agentRelationship').val(user.RelationshipWithApplicant);
+                    $('#agentMobile').val(user.MobileTelephone);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    //alert("readyState: " + jqXHR.readyState + "\nstatus: " + jqXHR.status);
+                    alert("responseText: " + jqXHR.responseText);
+                    //alert('LoadReferee Details Failed -> ' + errorThrown);
+                }
+            });
+    });
+</script>

@@ -1,0 +1,184 @@
+﻿@model Tuple<List<SmartDb4.Models.Member>, List<SmartDb4.Models.AdminAlert>>
+
+
+@{
+    ViewBag.Title = "SMART - Dashboard";
+}
+@section featured {
+@*    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title.</h1>
+                <h2>@ViewBag.Message</h2>
+            </hgroup>
+        </div>
+    </section>*@
+}
+
+<div class="pagelayout">
+    <div>
+        <div class="left">
+            <div class="dashboard"></div>
+        </div>
+        <div class="right">
+            <div class="manageprojectHeader"><h3>Dashboard</h3></div>
+        </div>
+    </div>
+    @using (Html.BeginForm("SearchMember", "SmartDbHome"))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <h1>@ViewBag.ErrorMessage</h1>
+        
+    <div class="form-horizontal" style="clear: both">
+        <div class="form-group">
+            
+            @*New Members*@
+            <div class="col-sm-6 col-lg-6">
+                <div class="panel panel-primary dashboardPanelHeight">
+                    <div class="panel-heading">New Member</div>
+                    <div class="panel-body labelfont">
+                        <div class="verticleScroll">
+                            @foreach (var item in Model.Item1.Where(m => m.NominationId == 3))
+                            {
+                                <div class="form-group">
+                                    <div class="col-sm-6 col-lg-6">Name : @Html.DisplayFor(modelItem => item.MemberName)</div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-3 col-lg-3">Age : @Html.DisplayFor(m => item.Age)</div>
+                                    <div class="col-sm-3 col-lg-3 col-md-offset-3">Gender : @Html.DisplayFor(m => item.Gender.GenderName)</div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-6 col-lg-6">Projects :
+                                        @foreach (var itm in item.Projects)
+                                            {
+                                                @Html.DisplayFor(m => itm.ProjectName)
+                                                @Html.Display(",")
+                                            }
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-6 col-lg-6">Notes : @Html.DisplayFor(m => item.Note)</div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-6 col-lg-6">Created By : @Html.DisplayFor(m => item.CreatedByName)</div>
+                                    <div class="col-sm-6 col-lg-6">Created On: @Html.DisplayFor(m => item.CreatedOn)</div>
+                                </div>                                
+                                <div class="form-group">
+                                    <div class="col-sm-12 col-lg-12" style="border-bottom: solid 1px #c4c4c4"></div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+             </div>
+            
+            @*Alerts*@
+            <div class="col-sm-6 col-lg-6">
+                <div class="panel panel-primary dashboardPanelHeight">
+                    <div class="panel-heading">Alerts</div>    
+                    <div class="panel-body labelfont">
+                        <div class="verticleScroll">
+                            @foreach (var item in Model.Item1.Where(x => x.Note != null))
+                            {
+                                
+                                <div class="form-group">
+                                    <div class="col-sm-6 col-lg-6">Name : @Html.DisplayFor(modelItem => item.MemberName)</div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-6 col-lg-6">Notes : @Html.DisplayFor(modelItem => item.Note)</div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-6 col-lg-6">Created By : @Html.DisplayFor(m => item.NotesCreatedBy)</div>
+                                    <div class="col-sm-6 col-lg-6">Created On: @Html.DisplayFor(m => item.NotesCreateDate)</div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12 col-lg-12" style="border-bottom: solid 1px #c4c4c4"></div>
+                                </div>
+                            }
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+
+         </div>
+
+         <div class="form-group">
+
+             @*Barred Members*@
+             <div class="col-sm-6 col-lg-6">
+                <div class="panel panel-primary dashboardPanelHeight">
+                    <div class="panel-heading">Barred Members</div>
+                        <div class="panel-body labelfont">
+                            <div class="verticleScroll">
+                                @foreach (var item in Model.Item1.Where(m => m.NominationId == 4))
+                                {
+                                    <div class="form-group">
+                                        <div class="col-sm-6 col-lg-6">Name : @Html.DisplayFor(modelItem => item.MemberName)</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-3 col-lg-3">Age : @Html.DisplayFor(m => item.Age)</div>
+                                        <div class="col-sm-3 col-lg-3 col-md-offset-3">Gender : @Html.DisplayFor(m => item.Gender.GenderName)</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-6 col-lg-6">Notes : @Html.DisplayFor(m => item.Note)</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-6 col-lg-6">Reason For Leaving : @Html.DisplayFor(m => item.ReasonForLeaving)</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-12 col-lg-12" style="border-bottom: solid 1px #c4c4c4"></div>
+                                    </div> 
+                                }
+                            </div>
+                        </div>
+                </div>
+             </div>
+
+             @*Find Members*@
+            <div class="col-sm-6 col-lg-6">
+                <div class="panel panel-primary dashboardPanelHeight">
+                    <div class="panel-heading">Admin Alerts</div>
+                    <div class="panel-body labelfont">
+                        <div class="verticleScrollAdminAlert">
+                            @{
+                                int cnt = 0;
+                                
+                                foreach (var item in Model.Item2.Where(x => x.AlertDesc != null))
+                                {
+                                    cnt = cnt + 1;
+                                    <div class="form-group">
+                                        @if (item.AlertCreatedOn.Value > DateTime.UtcNow.AddDays(-2))
+                                        {
+                                            <div class="col-sm-12 col-lg-12 blink_me">
+                                                @cnt :  @Html.DisplayFor(modelItem => item.AlertDesc)
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-sm-12 col-lg-12">
+                                                @cnt :  @Html.DisplayFor(modelItem => item.AlertDesc)
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            }
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-10">
+                                <div class="input-group margin-left1">
+                                    @Html.TextBox("searchText", null, new {@placeholder = "Find by member name", @class = "form-control"})
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="submit">Search</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+         </div>
+    </div>    
+    }
+</div>

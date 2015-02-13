@@ -1,0 +1,65 @@
+exec sp_executesql N'insert [dbo].[Member]([MemberName], [Address1], [Address2], [City], [PostCode], [HomeTel], [Email], [MobileTel], [GenderId], [DateOfBirth], [AgentId], [IsKeyOrSocialWorker], [KeyWorkerName], [KeyWorkerAgency], [KeyWorkerAddress1], [KeyWorkerAddress2], [KeyWorkerCity], [KeyWorkerPostCode], [KeyWorkerHomeTel], [KeyWorkerEmail], [KeyWorkerMobileTel], [IsConsultant], [ConsultantName], [ConsultantAgency], [ConsultantAddress1], [ConsultantAddress2], [ConsultantCity], [ConsultantPostCode], [ConsultantHomeTel], [ConsultantEmail], [ConsultantMobileTel], [IsCpn], [CpnName], [CpnAgency], [CpnAddress1], [CpnAddress2], [CpnCity], [CpnPostCode], [CpnHomeTel], [CpnEmail], [CpnMobileTel], [OtherSpecify], [OtherName], [OtherAgency], [OtherAddress1], [OtherAddress2], [OtherCity], [OtherPostCode], [OtherHomeTel], [OtherEmail], [OtherMobileTel], [ClientMentalIllness], [NewMemberReportableSymptoms], [ReasonForReferringToSmart], [CareProgramApproach], [CareManagementEligible], [RiskAssessmentDone], [GpAcknowledgement], [LivingAreaId], [OtherLivingArea], [EthnicityId], [OtherEthnicOrigin], [SexualOrientationId], [ReasonReferredToSmart], [ReturnToEmployment], [TypeOfEmploymentInterested], [TrainingOrStudy], [AreaOfTrainingOrStudy], [AnyOtherCondition], [CompletedAllSection], [EnclosedFullRiskAssessment], [EnclosedCopyOfCpa], [VocationalOutcome], [SoftOutcome], [FormSubmitDate], [InductionDate], [StartDate], [NominationId], [FundingResponsibilityId], [ExitDate], [ReasonForLeaving], [SummaryOfRisk], [ApplicationDate], [CreatedOn], [CreatedBy], [ModifiedOn], [ModifiedBy])
+values (@0, @1, null, @2, @3, @4, @5, @6, @7, @8, @9, @10, null, null, null, null, null, null, null, null, null, @11, null, null, null, null, null, null, null, null, null, @12, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, @13, @14, @15, @16, @17, null, @18, null, @19, null, @20, null, @21, null, null, @22, @23, null, null, null, @24, null, null, @25, @26, null, null, null, @27, @28, @29, null, null)
+select [MemberId]
+from [dbo].[Member]
+where @@ROWCOUNT > 0 and [MemberId] = scope_identity()',N'@0 nvarchar(100),@1 nvarchar(200),@2 nvarchar(100),@3 nvarchar(50),@4 nvarchar(50),@5 nvarchar(100),@6 nvarchar(50),@7 int,@8 datetime2(7),@9 int,@10 bit,@11 bit,@12 bit,@13 bit,@14 bit,@15 bit,@16 bit,@17 int,@18 int,@19 int,@20 bit,@21 bit,@22 bit,@23 bit,@24 datetime2(7),@25 int,@26 int,@27 datetime2(7),@28 datetime2(7),@29 nvarchar(100)',
+@0=N'kayla perfect',@1=N'21 High Street',@2=N'Feltham',@3=N'TW13 4GG',@4=N'020-376-4668',@5=N'kayla@gmail.com',@6=N'07785545236',@7=2,@8='1984-03-05 00:00:00',@9=2,@10=0,@11=0,@12=0,@13=0,@14=0,@15=0,@16=0,@17=1,@18=13,@19=1,@20=0,@21=0,@22=0,@23=0,@24='2014-03-17 22:07:14.8641927',@25=3,@26=1,@27='2014-03-17 22:07:14.8641927',@28='2014-03-17 22:07:14.8641927',@29=N'markadmin'
+
+exec sp_executesql N'insert [dbo].[Notes]([MemberId], [NotesDesc], [BroadCastAsAlert], [AlertValidDate], [NotesCreateDate])
+values (@0, @1, @2, @3, @4)
+select [NotesId]
+from [dbo].[Notes]
+where @@ROWCOUNT > 0 and [NotesId] = scope_identity()',N'@0 int,@1 nvarchar(2000),@2 bit,@3 datetime2(7),@4 datetime2(7)',@0=@@IDENTITY,@1=N'This is first alert',@2=1,@3='2014-02-28 00:00:00',@4='2014-02-22 17:43:00.5235933'
+
+
+
+
+
+
+
+
+
+========================================================================================================================================
+	declare @DateFrom DateTime,
+	@DateTo DateTime,
+	@NominationId INT,
+	@ProjecId INT,
+	@AgeBracket NVARCHAR(20),
+	@GenderId INT,
+	@EthnicityId INT,
+	@FundingResponsibilityId INT,
+	@GroupByClause NVARCHAR(50) = null
+
+	set @DateFrom = N'2014-01-01 00:00:00'
+	set @DateTo = N'2014-06-30 00:00:00'
+	set @NominationId = 0
+	set @ProjecId = 0
+	set @AgeBracket = NULL
+	set @GenderId = 0
+	set @EthnicityId = 0
+	set @FundingResponsibilityId = 0
+	set @GroupByClause = N'project'
+
+
+	select  p.ProjectName,[dbo].[CalculateAgeGroup](m.DateOfBirth) As AgeGroup,g.GenderName,  e.EthnicityName, 
+		f.FundingResponsibilityName, m.MemberName, n.NominationName, 
+		u.Agency, m.StartDate, m.DateOfBirth, [dbo].[TimeAtSmart](m.StartDate) As TimeAtSmart, [dbo].[TotalMembers]() as TotalMembers
+	 from member m
+	inner join Gender g on g.GenderId = m.GenderId
+	inner join Nomination n on n.NominationId = m.NominationId
+	inner join Ethnicity e on e.EthnicityId = m.EthnicityId
+	inner join UserProfile u on u.UserId = m.AgentId
+	inner join FundingResponsibility f on f.FundingResponsibilityId = m.FundingResponsibilityId
+	inner join MemberToProject mtp on mtp.MemberId = m.MemberId and mtp.IsAssigned = 1
+	inner join Project p on p.ProjectId = mtp.ProjectId
+	WHERE m.StartDate BETWEEN @DateFrom AND @DateTo
+		AND m.NominationId = CASE WHEN @NominationId <> 0 THEN @NominationId ELSE m.NominationId END
+		AND p.ProjectId = CASE WHEN @ProjecId <> 0 THEN @ProjecId ELSE p.ProjectId END
+		AND [dbo].[CalculateAgeGroup](m.DateOfBirth) = CASE WHEN @AgeBracket is null then [dbo].[CalculateAgeGroup](m.DateOfBirth) ELSE @AgeBracket END
+		AND m.GenderId = CASE WHEN @GenderId <> 0 THEN @GenderId ELSE m.GenderId END
+		AND m.EthnicityId = CASE WHEN @EthnicityId <> 0 THEN @EthnicityId ELSE m.EthnicityId END
+		AND m.FundingResponsibilityId = CASE WHEN @FundingResponsibilityId <> 0 THEN @FundingResponsibilityId ELSE m.FundingResponsibilityId END  
+
+
+
+

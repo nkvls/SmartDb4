@@ -1,0 +1,29 @@
+﻿@model DateTime ?
+
+@{
+    //int size = 10;
+    ////int maxLength = 100;
+    //if (ViewData["size"] != null)
+    //{
+    //    size = (int) ViewData["size"];
+    //}
+    //if (ViewData["maxLength"] != null)
+    //{
+    //    maxLength = (int) ViewData["maxLength"];
+    //}
+}
+@Html.TextBox("", (Model.HasValue ? Model.Value.ToShortDateString() : string.Empty), 
+new { @class = "datefield", type = "date", data_date_format = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern.ToLower() })
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.datefield').datepicker(
+            {
+                format: 'dd/mm/yyyy',
+                startDate: Date.now()
+                //changeMonth: true,
+                //changeYear: true
+            });
+    });
+</script>

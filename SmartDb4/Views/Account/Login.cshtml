@@ -1,0 +1,52 @@
+﻿@model SmartDb4.Models.LoginModel
+
+@{
+    ViewBag.Title = "Log in";
+}
+
+
+
+<div style="vertical-align:middle;padding-top:100px;">
+    
+    @using (Html.BeginForm(new {ReturnUrl = ViewBag.ReturnUrl}))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <div class="col-md-offset-4 container labelfont">
+            <div class="row form-group">
+                <div class="col-md-6">
+                    <img src="~/Content/images/loginimage.png" width="74%" />
+                </div>
+            </div>
+            <div style="clear: both;height:20px;"></div>
+            <div class="row form-group">
+                <div class="padding-left6">
+                    @Html.TextBoxFor(model=> model.UserName, new {@placeholder = "Email"})
+                    @Html.ValidationMessageFor(model => model.UserName)
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="padding-left6">
+                    @Html.TextBoxFor(model=> model.Password, new {@placeholder = "Password", type = "password"})
+                    @Html.ValidationMessageFor(model => model.Password)
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="padding-left13">
+                    @Html.CheckBoxFor(m => m.RememberMe)
+                    @Html.LabelFor(m => m.RememberMe)
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="padding-left15">
+                    <button type="submit" class="btn btn-primary btn-lg">Sign in</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

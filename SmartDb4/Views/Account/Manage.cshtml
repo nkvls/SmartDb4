@@ -1,0 +1,45 @@
+﻿@model SmartDb4.Models.LocalPasswordModel
+@{
+    ViewBag.Title = "Manage Account";
+}
+
+<div class="pagelayout">
+    <h3>Manage Account</h3>
+    <div>
+        <div class="pull-left">
+            <div class="triangleRight" style="float:right;border-color: #FFF #FFF #FFF #6085c6 !important;"></div>
+            <div class="rectangle" style="float:right;background: #6085c6 !important">@Html.ActionLink("Account", "Manage", null, new { style = "color:white;text-decoration: none"})</div>
+        </div>
+   
+        <div style="float:left">
+            <div class="triangleLeft pull-left"></div>
+            <div class="rectangle pull-left" style="width:150px;">Manage Password</div>
+            <div class="triangleRight pull-left"></div>
+        </div>
+    </div>
+    <div style="clear: both;height:20px;"></div>
+    <p class="message-success">@ViewBag.StatusMessage</p>
+    <div class="alert alert-success">
+        <p>You're logged in as <strong>@User.Identity.Name</strong></p>
+    </div>
+
+    @if (ViewBag.HasLocalPassword)
+    {
+        @Html.Partial("_ChangePasswordPartial")
+    }
+    else
+    { 
+        @Html.Partial("_SetPasswordPartial")
+    }
+
+    @*<section id="externalLogins">
+        @Html.Action("RemoveExternalLogins")
+
+        <h3>Add an external login</h3>
+        @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
+    </section>*@
+
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

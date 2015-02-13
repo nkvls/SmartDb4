@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSet1" targetNamespace="http://tempuri.org/DataSet1.xsd" xmlns:mstns="http://tempuri.org/DataSet1.xsd" xmlns="http://tempuri.org/DataSet1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSet1" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet1" msprop:Generator_UserDSName="DataSet1">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_RowClassName="DataTable1Row">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ProjectName" msprop:Generator_ColumnVarNameInTable="columnProjectName" msprop:Generator_ColumnPropNameInRow="ProjectName" msprop:Generator_ColumnPropNameInTable="ProjectNameColumn" msprop:Generator_UserColumnName="ProjectName" type="xs:string" minOccurs="0" />
+              <xs:element name="MemberName" msprop:Generator_ColumnVarNameInTable="columnMemberName" msprop:Generator_ColumnPropNameInRow="MemberName" msprop:Generator_ColumnPropNameInTable="MemberNameColumn" msprop:Generator_UserColumnName="MemberName" type="xs:string" minOccurs="0" />
+              <xs:element name="Nomination" msprop:Generator_ColumnVarNameInTable="columnNomination" msprop:Generator_ColumnPropNameInRow="Nomination" msprop:Generator_ColumnPropNameInTable="NominationColumn" msprop:Generator_UserColumnName="Nomination" type="xs:string" minOccurs="0" />
+              <xs:element name="Agency" msprop:Generator_ColumnVarNameInTable="columnAgency" msprop:Generator_ColumnPropNameInRow="Agency" msprop:Generator_ColumnPropNameInTable="AgencyColumn" msprop:Generator_UserColumnName="Agency" type="xs:string" minOccurs="0" />
+              <xs:element name="Gender" msprop:Generator_ColumnVarNameInTable="columnGender" msprop:Generator_ColumnPropNameInRow="Gender" msprop:Generator_ColumnPropNameInTable="GenderColumn" msprop:Generator_UserColumnName="Gender" type="xs:string" minOccurs="0" />
+              <xs:element name="Ethnicity" msprop:Generator_ColumnVarNameInTable="columnEthnicity" msprop:Generator_ColumnPropNameInRow="Ethnicity" msprop:Generator_ColumnPropNameInTable="EthnicityColumn" msprop:Generator_UserColumnName="Ethnicity" type="xs:string" minOccurs="0" />
+              <xs:element name="AgeGroup" msprop:Generator_ColumnVarNameInTable="columnAgeGroup" msprop:Generator_ColumnPropNameInRow="AgeGroup" msprop:Generator_ColumnPropNameInTable="AgeGroupColumn" msprop:Generator_UserColumnName="AgeGroup" type="xs:string" minOccurs="0" />
+              <xs:element name="FundingResponsibility" msprop:Generator_ColumnVarNameInTable="columnFundingResponsibility" msprop:Generator_ColumnPropNameInRow="FundingResponsibility" msprop:Generator_ColumnPropNameInTable="FundingResponsibilityColumn" msprop:Generator_UserColumnName="FundingResponsibility" type="xs:string" minOccurs="0" />
+              <xs:element name="TimeAtSmart" msprop:Generator_ColumnVarNameInTable="columnTimeAtSmart" msprop:Generator_ColumnPropNameInRow="TimeAtSmart" msprop:Generator_ColumnPropNameInTable="TimeAtSmartColumn" msprop:Generator_UserColumnName="TimeAtSmart" type="xs:string" minOccurs="0" />
+              <xs:element name="StartDate" msprop:Generator_ColumnVarNameInTable="columnStartDate" msprop:Generator_ColumnPropNameInRow="StartDate" msprop:Generator_ColumnPropNameInTable="StartDateColumn" msprop:Generator_UserColumnName="StartDate" type="xs:string" minOccurs="0" />
+              <xs:element name="TotalCount" msprop:Generator_ColumnVarNameInTable="columnTotalCount" msprop:Generator_ColumnPropNameInRow="TotalCount" msprop:Generator_ColumnPropNameInTable="TotalCountColumn" msprop:Generator_UserColumnName="TotalCount" type="xs:string" minOccurs="0" />
+              <xs:element name="DateOfLeaving" msprop:Generator_ColumnVarNameInTable="columnDateOfLeaving" msprop:Generator_ColumnPropNameInRow="DateOfLeaving" msprop:Generator_ColumnPropNameInTable="DateOfLeavingColumn" msprop:Generator_UserColumnName="DateOfLeaving" type="xs:string" minOccurs="0" />
+              <xs:element name="ReasonOfLeaving" msprop:Generator_ColumnVarNameInTable="columnReasonOfLeaving" msprop:Generator_ColumnPropNameInRow="ReasonOfLeaving" msprop:Generator_ColumnPropNameInTable="ReasonOfLeavingColumn" msprop:Generator_UserColumnName="ReasonOfLeaving" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,63 @@
+﻿@model SmartDb4.Models.UserProfile
+
+<div class="pagelayout">
+    @* <ol class="breadcrumb">
+        <li>@Html.ActionLink("User", "Index")</li>
+        <li class="active">Details</li>
+    </ol>*@
+        <div>
+        <div class="pull-left">
+            <div class="triangleRight" style="float:right;border-color: #FFF #FFF #FFF #6085c6 !important;"></div>
+            <div class="rectangle" style="float:right;background: #6085c6 !important">@Html.ActionLink("User", "Index", null, new { style = "color:white;text-decoration: none"})</div>
+        </div>
+   
+        <div style="float:left">
+            <div class="triangleLeft pull-left"></div>
+            <div class="rectangle pull-left">Details</div>
+            <div class="triangleRight pull-left"></div>
+        </div>
+    </div>
+    <div style="clear: both;height:20px;"></div>
+    <div class="container labelfont">
+        <div class="row form-group">
+            <div class="col-md-2 ">@Html.DisplayNameFor(model => model.UserName) :</div>
+            <div class="col-md-4 col-md-pull-1">@Html.DisplayFor(model => model.UserName)</div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-2 ">@Html.DisplayNameFor(model => model.FirstName) :</div>
+            <div class="col-md-4 col-md-pull-1">@Html.DisplayFor(model => model.FirstName)</div>
+            <div class="col-md-2 col-md-pull-3">@Html.DisplayNameFor(model => model.LastName) :</div>
+            <div class="col-md-4 col-md-pull-4">@Html.DisplayFor(model => model.LastName)</div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-2 ">@Html.DisplayNameFor(model => model.Agency) :</div>
+            <div class="col-md-4 col-md-pull-1">@Html.DisplayFor(model => model.Agency)</div>
+            <div class="col-md-2 col-md-pull-3">@Html.DisplayNameFor(model => model.Address1) :</div>
+            <div class="col-md-4 col-md-pull-4">@Html.DisplayFor(model => model.Address1)</div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-2 ">@Html.DisplayNameFor(model => model.Address2) :</div>
+            <div class="col-md-4 col-md-pull-1">@Html.DisplayFor(model => model.Address2)</div>
+            <div class="col-md-2 col-md-pull-3">@Html.DisplayNameFor(model => model.City) :</div>
+            <div class="col-md-4 col-md-pull-4">@Html.DisplayFor(model => model.City)</div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-2 ">@Html.DisplayNameFor(model => model.PostCode) :</div>
+            <div class="col-md-4 col-md-pull-1">@Html.DisplayFor(model => model.PostCode)</div>
+            <div class="col-md-2 col-md-pull-3">@Html.DisplayNameFor(model => model.WorkTelephone) :</div>
+            <div class="col-md-4 col-md-pull-4">@Html.DisplayFor(model => model.WorkTelephone)</div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-2 ">@Html.DisplayNameFor(model => model.MobileTelephone) :</div>
+            <div class="col-md-4 col-md-pull-1">@Html.DisplayFor(model => model.MobileTelephone)</div>
+            <div class="col-md-2 col-md-pull-3">@Html.DisplayNameFor(model => model.Email) :</div>
+            <div class="col-md-4 col-md-pull-4">@Html.DisplayFor(model => model.Email)</div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-2 ">@Html.DisplayNameFor(model => model.UserType.UserTypeName) :</div>
+            <div class="col-md-4 col-md-pull-1">@Html.DisplayFor(model => model.UserType.UserTypeName)</div>
+            <div class="col-md-2 col-md-pull-3">@Html.DisplayNameFor(model => model.IsHistoric) :</div>
+            <div class="col-md-4 col-md-pull-4">@Html.DisplayFor(model => model.IsHistoric)</div>
+        </div>
+    </div>
+</div>

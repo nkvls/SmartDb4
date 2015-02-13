@@ -1,0 +1,200 @@
+IF EXISTS(SELECT COUNT(*) FROM sys.Objects WHERE type = 'FN' and name = 'TimeAtSmart')
+BEGIN
+	DROP FUNCTION [dbo].[TimeAtSmart]
+END
+GO
+
+CREATE FUNCTION [dbo].[TimeAtSmart]
+(
+	@StartDate DateTime
+)
+RETURNS NVARCHAR(200)
+AS
+BEGIN
+
+	-- Declare the return variable here
+	DECLARE @date datetime, @tmpdate datetime, @years int, @months int, @days int
+
+	SELECT @date = @StartDate	--'1990-11-22'
+
+	SELECT @tmpdate = @date
+
+	SELECT @years = DATEDIFF(yy, @tmpdate, GETDATE()) - CASE WHEN (MONTH(@date) > MONTH(GETDATE())) OR (MONTH(@date) = MONTH(GETDATE()) AND DAY(@date) > DAY(GETDATE())) THEN 1 ELSE 0 END
+	SELECT @tmpdate = DATEADD(yy, @years, @tmpdate)
+	SELECT @months = DATEDIFF(m, @tmpdate, GETDATE()) - CASE WHEN DAY(@date) > DAY(GETDATE()) THEN 1 ELSE 0 END
+	SELECT @tmpdate = DATEADD(m, @months, @tmpdate)
+	SELECT @days = DATEDIFF(d, @tmpdate, GETDATE())
+
+
+
+		-- Return the result of the function
+		--RETURN <@ResultVar, sysname, @Result>
+
+	RETURN Convert(nvarchar, @years) + ' Years ' + Convert(nvarchar, @months) + ' Months ' + Convert(nvarchar, @days) + ' Days'
+
+END
+
+GO
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+IF EXISTS(SELECT COUNT(*) FROM sys.Objects WHERE type = 'FN' and name = 'CalculateAgeGroup')
+BEGIN
+	DROP FUNCTION [dbo].[CalculateAgeGroup]
+END
+GO
+
+CREATE FUNCTION [dbo].[CalculateAgeGroup]
+(
+	@DateOfBirth DateTime
+)
+RETURNS NVARCHAR(200)
+AS
+BEGIN
+	DECLARE @date datetime, @ageGroup int
+	DECLARE @return NVARCHAR(200)
+
+	SELECT @date = @DateOfBirth	--'1997-11-22'
+
+	SELECT @ageGroup = DATEDIFF(year,  @date, GETDATE())
+
+	IF(@ageGroup >= 18 and @ageGroup <= 29)
+		 --SET @return = '18-29'
+		 SELECT @return = AgeBracketId FROM AgeBracket WHERE AgeBracketText = '18-29'
+	ELSE IF(@ageGroup >= 30 and @ageGroup <= 49)
+		--SET @return =  '30-49'
+		SELECT @return = AgeBracketId FROM AgeBracket WHERE AgeBracketText ='30-49'
+	ELSE IF(@ageGroup >= 50 and @ageGroup <= 64)
+		--SET @return =  '50-64'
+		SELECT @return = AgeBracketId FROM AgeBracket WHERE AgeBracketText ='50-64'
+	ELSE IF(@ageGroup >= 65)
+		--SET @return =  '65+'
+		SELECT @return = AgeBracketId FROM AgeBracket WHERE AgeBracketText ='65+'
+	ELSE
+		SET @return = -1	-- 'LESS THAN 18'
+			
+	RETURN @return
+
+END
+
+GO
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+IF EXISTS(SELECT COUNT(*) FROM sys.Objects WHERE type = 'FN' and name = 'CalculateAgeBracketText')
+BEGIN
+	DROP FUNCTION [dbo].[CalculateAgeBracketText]
+END
+GO
+
+CREATE FUNCTION [dbo].[CalculateAgeBracketText]
+(
+	@DateOfBirth DateTime
+)
+RETURNS NVARCHAR(200)
+AS
+BEGIN
+	DECLARE @date datetime, @ageGroup int
+	DECLARE @return NVARCHAR(200)
+
+	SELECT @date = @DateOfBirth	--'1997-11-22'
+
+	SELECT @ageGroup = DATEDIFF(year,  @date, GETDATE())
+
+	IF(@ageGroup >= 18 and @ageGroup <= 29)
+		 --SET @return = '18-29'
+		 SELECT @return = AgeBracketText FROM AgeBracket WHERE AgeBracketText = '18-29'
+	ELSE IF(@ageGroup >= 30 and @ageGroup <= 49)
+		--SET @return =  '30-49'
+		SELECT @return = AgeBracketText FROM AgeBracket WHERE AgeBracketText ='30-49'
+	ELSE IF(@ageGroup >= 50 and @ageGroup <= 64)
+		--SET @return =  '50-64'
+		SELECT @return = AgeBracketText FROM AgeBracket WHERE AgeBracketText ='50-64'
+	ELSE IF(@ageGroup >= 65)
+		--SET @return =  '65+'
+		SELECT @return = AgeBracketText FROM AgeBracket WHERE AgeBracketText ='65+'
+	ELSE
+		SET @return = 'Undefined'	-- 'LESS THAN 18'
+			
+	RETURN @return
+
+END
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+IF EXISTS(SELECT COUNT(*) FROM sys.Objects WHERE type = 'FN' and name = 'TotalMembers')
+BEGIN
+	DROP FUNCTION [dbo].[TotalMembers]
+END
+GO
+
+CREATE FUNCTION [dbo].[TotalMembers]
+()
+RETURNS int
+
+AS
+BEGIN
+	
+
+	declare @cnt int
+	select  @cnt = count(*) from Member
+	return @cnt
+
+END
+
+GO
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+IF EXISTS(SELECT COUNT(*) FROM sys.Objects WHERE type = 'P' and name = 'GetParameterizedReport')
+BEGIN
+	DROP PROCEDURE [dbo].[GetParameterizedReport]
+END
+GO
+
+CREATE PROCEDURE [dbo].[GetParameterizedReport] 
+	@DateFrom DateTime,
+	@DateTo DateTime,
+	@NominationId INT,
+	@ProjecId INT,
+	@AgeBracket NVARCHAR(20),
+	@GenderId INT,
+	@EthnicityId INT,
+	@FundingResponsibilityId INT,
+	@GroupByClause NVARCHAR(50) = null
+AS
+BEGIN
+
+	select  p.ProjectName,[dbo].[CalculateAgeGroup](m.DateOfBirth) As AgeGroup,g.GenderName,  e.EthnicityName, 
+		f.FundingResponsibilityName, m.MemberName, n.NominationName, 
+		u.Agency, m.StartDate, m.DateOfBirth, [dbo].[TimeAtSmart](m.StartDate) As TimeAtSmart, [dbo].[TotalMembers]() as TotalMembers,
+		[dbo].[CalculateAgeBracketText](m.DateOfBirth) As AgeBracketText
+	from member m
+	inner join Gender g on g.GenderId = m.GenderId
+	inner join Nomination n on n.NominationId = m.NominationId
+	inner join Ethnicity e on e.EthnicityId = m.EthnicityId
+	inner join UserProfile u on u.UserId = m.AgentId
+	inner join FundingResponsibility f on f.FundingResponsibilityId = m.FundingResponsibilityId
+	inner join MemberToProject mtp on mtp.MemberId = m.MemberId and mtp.IsAssigned = 1
+	inner join Project p on p.ProjectId = mtp.ProjectId
+	WHERE m.StartDate BETWEEN @DateFrom AND @DateTo
+		AND m.NominationId = CASE WHEN @NominationId <> 0 THEN @NominationId ELSE m.NominationId END
+		AND p.ProjectId = CASE WHEN @ProjecId <> 0 THEN @ProjecId ELSE p.ProjectId END
+		AND [dbo].[CalculateAgeGroup](m.DateOfBirth) = CASE WHEN @AgeBracket is null then [dbo].[CalculateAgeGroup](m.DateOfBirth) ELSE @AgeBracket END
+		AND m.GenderId = CASE WHEN @GenderId <> 0 THEN @GenderId ELSE m.GenderId END
+		AND m.EthnicityId = CASE WHEN @EthnicityId <> 0 THEN @EthnicityId ELSE m.EthnicityId END
+		AND m.FundingResponsibilityId = CASE WHEN @FundingResponsibilityId <> 0 THEN @FundingResponsibilityId ELSE m.FundingResponsibilityId END  
+
+END
+
+
+GO
+
+
+
+
+
+
+

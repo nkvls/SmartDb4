@@ -1,0 +1,115 @@
+﻿@model SmartDb4.Models.Member
+
+@{
+    ViewBag.Title = "Member";
+}
+
+
+<div class="pagelayout">
+    <h3>Details</h3>
+    <div>
+        <div class="pull-left">
+            <div class="triangleRight" style="float:right;border-color: #FFF #FFF #FFF #6085c6 !important;"></div>
+            <div class="rectangle" style="float:right;background: #6085c6 !important">@Html.ActionLink("Member", "Index", null, new { style = "color:white;text-decoration: none"})</div>
+        </div>
+   
+        <div style="float:left">
+            <div class="triangleLeft pull-left"></div>
+            <div class="rectangle pull-left">Details</div>
+            <div class="triangleRight pull-left"></div>
+        </div>
+    </div>
+    <div style="clear: both;height:20px;"></div>
+    @*<ol class="breadcrumb">
+        <li>@Html.ActionLink("Member", "Index")</li>
+        <li class="active">Details</li>
+    </ol>*@
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-6 col-sm-6 col-lg-6">
+                <div class="col-6 col-sm-6 col-lg-6">@Html.DisplayNameFor(model => model.MemberName)</div>
+                <div class="col-6 col-sm-6 col-lg-6 col-md-pull-4"> @Html.DisplayFor(model => model.MemberName)</div>
+            </div>
+            <div class="col-6 col-sm-6 col-lg-6">
+                <div class="col-6 col-sm-6 col-lg-6">@Html.DisplayNameFor(model => model.Address1)</div>
+                <div class="col-6 col-sm-6 col-lg-6 col-md-pull-4"> @Html.DisplayFor(model => model.Address1)</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-6 col-sm-6 col-lg-6">
+                <div class="col-6 col-sm-6 col-lg-6">@Html.DisplayNameFor(model => model.Address2)</div>
+                <div class="col-6 col-sm-6 col-lg-6 col-md-pull-4"> @Html.DisplayFor(model => model.Address2)</div>
+            </div>
+            <div class="col-6 col-sm-6 col-lg-6">
+                <div class="col-6 col-sm-6 col-lg-6">@Html.DisplayNameFor(model => model.City)</div>
+                <div class="col-6 col-sm-6 col-lg-6 col-md-pull-4"> @Html.DisplayFor(model => model.City)</div>
+            </div>           
+        </div>
+        <div class="form-group">
+            <div class="col-6 col-sm-6 col-lg-6">
+                <div class="col-6 col-sm-6 col-lg-6">@Html.DisplayNameFor(model => model.PostCode)</div>
+                <div class="col-6 col-sm-6 col-lg-6 col-md-pull-4"> @Html.DisplayFor(model => model.PostCode)</div>
+            </div>
+            <div class="col-6 col-sm-6 col-lg-6">
+                <div class="col-6 col-sm-6 col-lg-6">@Html.DisplayNameFor(model => model.HomeTel)</div>
+                <div class="col-6 col-sm-6 col-lg-6 col-md-pull-4"> @Html.DisplayFor(model => model.HomeTel)</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-6 col-sm-6 col-lg-6">
+                <div class="col-6 col-sm-6 col-lg-6">@Html.DisplayNameFor(model => model.Email)</div>
+                <div class="col-6 col-sm-6 col-lg-6 col-md-pull-4"> @Html.DisplayFor(model => model.Email)</div>
+            </div>
+            <div class="col-6 col-sm-6 col-lg-6">
+                <div class="col-6 col-sm-6 col-lg-6">@Html.DisplayNameFor(model => model.MobileTel)</div>
+                <div class="col-6 col-sm-6 col-lg-6 col-md-pull-4"> @Html.DisplayFor(model => model.MobileTel)</div>
+            </div>            
+        </div>
+        <div class="form-group">
+            <div class="col-6 col-sm-6 col-lg-6">
+                <div class="col-6 col-sm-6 col-lg-6">@Html.DisplayNameFor(model => model.Gender.GenderName)</div>
+                <div class="col-6 col-sm-6 col-lg-6 col-md-pull-4"> @Html.DisplayFor(model => model.Gender.GenderName)</div>
+            </div>
+            <div class="col-6 col-sm-6 col-lg-6">
+                <div class="col-6 col-sm-6 col-lg-6">@Html.DisplayNameFor(model => model.DateOfBirth)</div>
+                <div class="col-6 col-sm-6 col-lg-6 col-md-pull-4"> @Html.DisplayFor(model => model.DateOfBirth)</div>
+            </div>            
+        </div>
+        <div style="height:20px;">&nbsp;</div>
+        <div class="form-group">
+            <div class="col-6 col-sm-6 col-lg-6">
+                <button type="button" class="btn btn-primary backttoindex" data-url='@Url.Action("Index")'>Back to List</button>
+            </div>
+            <div class="col-1 col-sm-1 col-lg-1 col-md-pull-4">
+                 @*@using (Html.BeginForm("Edit", "MembershipData", FormMethod.Get, new { id = Model.MemberId }))
+                    {
+                        *@
+                <button type="button" class="btn btn-success alert123" data-url='@Url.Action("Edit", new {id = Model.MemberId})'>Edit</button>
+                @*    }*@
+            </div>  
+
+                              
+        </div>
+    </div>
+    
+    @*<p>
+        @Html.ActionLink("Edit", "Edit", new { id=Model.MemberId }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>*@
+</div>
+
+<script>
+    $(document).on("click", ".backttoindex", function (e) {
+        var urlToExec = $(this).data('url');
+        //alert(urlToExec);
+        window.location.href = "@Url.Action("Index")";
+    });
+
+    $(document).on("click", ".alert123", function (e) {
+        var urlToExec = $(this).data('url');
+        //alert(urlToExec);
+        var currurl = window.location.href;
+        var urltogo = currurl.replace('Details', 'Edit');
+        window.location.href = urltogo;
+    });
+</script>

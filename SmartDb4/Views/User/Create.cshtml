@@ -1,0 +1,141 @@
+﻿@model SmartDb4.Models.UserProfile
+
+@{
+    ViewBag.Title = "User";
+}
+
+<div class="pagelayout">
+    <div class="inline-display">
+        <div class="manageuser"></div>
+        <div class="manageprojectHeader"><h3>Create</h3></div>
+    </div>
+  
+    <div>
+        <div class="pull-left">
+            <div class="triangleRight" style="float:right;border-color: #FFF #FFF #FFF #6085c6 !important;"></div>
+            <div class="rectangle" style="float:right;background: #6085c6 !important">@Html.ActionLink("User", "Index", null, new { style = "color:white;text-decoration: none"})</div>
+        </div>
+   
+        <div style="float:left">
+            <div class="triangleLeft pull-left"></div>
+            <div class="rectangle pull-left">Create</div>
+            <div class="triangleRight pull-left"></div>
+        </div>
+    </div>
+    <div style="clear: both;height:20px;"></div>
+    
+    @{
+        if (ViewBag.Error != null)
+        {
+        <div class="alert alert-danger alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <strong>Error!</strong> @ViewBag.Error
+        </div>
+        }
+     }
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <div class="container labelfont">
+            <div class="row form-group">
+                <div class="col-md-2 ">Email<span class="textRed"> *</span></div>
+                 <div class="col-md-4 col-md-pull-1">
+                    @Html.EditorFor(model => model.Email)
+                    @Html.ValidationMessageFor(model => model.Email)
+                </div>
+                <div class="col-md-2 col-md-pull-1">Password<span class="textRed"> *</span></div>
+                 <div class="col-md-4 col-md-pull-2">
+                    @Html.EditorFor(model => model.Password)
+                    @Html.ValidationMessageFor(model => model.Password)
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-2">First Name<span class="textRed"> *</span></div>
+                 <div class="col-md-4 col-md-pull-1">
+                    @Html.EditorFor(model => model.FirstName)
+                    @Html.ValidationMessageFor(model => model.FirstName)
+                </div>
+                <div class="col-md-1 col-md-pull-1">Last Name<span class="textRed">*</span></div>
+                 <div class="col-md-4 col-md-pull-1">
+                    @Html.EditorFor(model => model.LastName)
+                    @Html.ValidationMessageFor(model => model.LastName)
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-2">Agency</div>
+                 <div class="col-md-4 col-md-pull-1">
+                    @Html.EditorFor(model => model.Agency)
+                    @Html.ValidationMessageFor(model => model.Agency)
+                </div>
+                <div class="col-md-1 col-md-pull-1">Address1</div>
+                 <div class="col-md-4 col-md-pull-1">
+                    @Html.EditorFor(model => model.Address1)
+                    @Html.ValidationMessageFor(model => model.Address1)
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-2">Address2</div>
+                 <div class="col-md-4 col-md-pull-1">
+                    @Html.EditorFor(model => model.Address2)
+                    @Html.ValidationMessageFor(model => model.Address2)
+                </div>
+                <div class="col-md-1 col-md-pull-1">City</div>
+                 <div class="col-md-4 col-md-pull-1">
+                    @Html.EditorFor(model => model.City)
+                    @Html.ValidationMessageFor(model => model.City)
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-2">Post Code</div>
+                 <div class="col-md-4 col-md-pull-1">
+                    @Html.EditorFor(model => model.PostCode)
+                    @Html.ValidationMessageFor(model => model.PostCode)
+                </div>
+                <div class="col-md-1 col-md-pull-1">Tel (Work)</div>
+                 <div class="col-md-4 col-md-pull-1">
+                    @Html.EditorFor(model => model.WorkTelephone)
+                    @Html.ValidationMessageFor(model => model.WorkTelephone)
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-2">Mobile</div>
+                <div class="col-md-4 col-md-pull-1">
+                    @Html.EditorFor(model => model.MobileTelephone)
+                    @Html.ValidationMessageFor(model => model.MobileTelephone)
+                </div>
+                <div class="col-md-1 col-md-pull-1">User Type<span class="textRed">*</span></div>
+                <div class="col-md-4 col-md-pull-1">
+                    @Html.DropDownList("UserTypeId", null, new { @class = "form-control newCombo" })
+                    @Html.ValidationMessageFor(model => model.UserTypeId)
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-2">Is Historic</div>
+                 <div class="col-md-4 col-md-pull-1">
+                    @Html.EditorFor(model => model.IsHistoric)
+                </div>
+                <div class="col-md-1 col-md-pull-1"></div>
+                 <div class="col-md-4 col-md-pull-1"></div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-6 col-md-offset-6" style="margin-bottom: 10px;">
+                    <button type="button" class="btn btn-primary backttoindex" data-url='@Url.Action("Index")'>Back to List</button>
+                    <button type="submit" class="btn btn-success">Create</button>
+                </div>
+                <div class="col-md-offset-10">
+                
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    $(document).on("click", ".backttoindex", function (e) {
+        var urlToExec = $(this).data('url');
+        //alert(urlToExec);
+        window.location.href = "@Url.Action("Index")";
+    });
+</script>

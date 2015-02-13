@@ -1,0 +1,113 @@
+﻿@model SmartDb4.Models.Project
+
+@{
+    ViewBag.Title = "Project";
+}
+
+<div class="pagelayout">
+    <div class="inline-display">
+        <div class="manageproject"></div>
+        <div class="manageprojectHeader"><h3>Create</h3></div>
+    </div>
+    <div>
+        <div class="pull-left">
+            <div class="triangleRight" style="float:right;border-color: #FFF #FFF #FFF #6085c6 !important;"></div>
+            <div class="rectangle" style="float:right;background: #6085c6 !important">@Html.ActionLink("Project", "Index", null, new { style = "color:white;text-decoration: none"})</div>
+        </div>
+   
+        <div style="float:left">
+            <div class="triangleLeft pull-left"></div>
+            <div class="rectangle pull-left">Create</div>
+            <div class="triangleRight pull-left"></div>
+        </div>
+    </div>
+    <div style="clear: both;height:20px;"></div>
+    @*<ol class="breadcrumb">
+        <li>@Html.ActionLink("Project", "Index")</li>
+        <li class="active">Create</li>
+    </ol>*@
+@{
+    if(ViewBag.Error != null)
+    {
+        <div class="alert alert-danger alert-dismissable">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <strong>Error!</strong> @ViewBag.Error
+        </div>
+    }
+}
+    <br/>
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <div class="container labelfont">
+            <div class="row form-group">
+                <div class="col-md-2 ">Project Name<span class="textRed"> *</span></div>
+                <div class="col-md-4 col-md-pull-1">
+                    @Html.EditorFor(model => model.ProjectName)
+                    @Html.ValidationMessageFor(model => model.ProjectName)
+                </div>
+                <div class="col-md-2 col-md-pull-1">Description</div>
+                <div class="col-md-4 col-md-pull-2">
+                    @Html.TextAreaFor(model => model.Description, new {@class = "textAreaHeight", style="width:82%;height:80px;"})
+                    @Html.ValidationMessageFor(model => model.Description)
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-2 ">Start Date</div>
+                <div class="col-md-4 col-md-pull-1">
+                    @Html.EditorFor(model => model.StartDate)
+                    @Html.ValidationMessageFor(model => model.StartDate)
+                </div>
+                <div class="col-md-2 col-md-pull-1">End Date</div>
+                <div class="col-md-4 col-md-pull-2">
+                    @Html.EditorFor(model => model.EndDate)
+                    @Html.ValidationMessageFor(model => model.EndDate)
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-2 ">Participants<span class="textRed"> *</span></div>
+                <div class="col-md-4 col-md-pull-1">
+                    @Html.EditorFor(model => model.MaxNoOfParticipants)
+                    @Html.ValidationMessageFor(model => model.MaxNoOfParticipants)
+                </div>
+                <div class="col-md-2 col-md-pull-1">Classification</div>
+                <div class="col-md-4 col-md-pull-2">
+                    @Html.DropDownList("ClassificationId", null, new { @class = "form-control newCombo" })
+                    @Html.ValidationMessageFor(model => model.ClassificationId)
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-2 ">Supervisor<span class="textRed"> *</span></div>
+                <div class="col-md-4 col-md-pull-1">
+                    @Html.DropDownList("SupervisorId", null, new { @class = "form-control newCombo" })
+                    @Html.ValidationMessageFor(model => model.SupervisorId)
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-6 col-md-offset-6" style="margin-bottom: 10px;">
+                    <button type="button" class="btn btn-primary backttoindex" data-url='@Url.Action("Index")'>Back to List</button>
+                    <button type="submit" class="btn btn-success">Create</button>
+                </div>
+                <div class="col-md-offset-10">
+                
+                </div>
+            </div>
+        </div>
+        
+    }
+</div>
+
+
+<script>
+    $(document).on("click", ".backttoindex", function (e) {
+        var urlToExec = $(this).data('url');
+        //alert(urlToExec);
+        window.location.href = "@Url.Action("Index")";
+    });
+    
+    //$(function () {
+    //    $('#dp3').datepicker();
+    //});
+        
+</script>

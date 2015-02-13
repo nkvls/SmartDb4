@@ -1,0 +1,91 @@
+﻿@model SmartDb4.Models.ReportDataModel
+
+@{
+    ViewBag.Title = "Report";
+}
+
+<div class="pagelayout">
+    <div class="inline-display">
+        <div class="generateReport"></div>
+        <div class="manageprojectHeader"><h3>Generate Report</h3></div>
+    </div>
+    <div>
+        <div class="pull-left">
+            <div class="triangleRight" style="float:right;border-color: #FFF #FFF #FFF #6085c6 !important;"></div>
+            <div class="rectangle" style="float:right;background: #6085c6 !important">@Html.ActionLink("Report", "Index", null, new { style = "color:white;text-decoration: none"})</div>
+        </div>
+    </div>
+    <div style="clear: both;height:20px;"></div>
+    @*<ol class="breadcrumb">
+        <li>
+            @Html.ActionLink("Report", "Index")
+        </li>
+    </ol>*@
+
+    @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <div class="container labelfont">
+            <div class="row form-group">
+                <div class="col-md-2 ">Start Date</div>
+                <div class="col-md-4 col-md-pull-1">
+                    @Html.EditorFor(model => model.DateFrom)
+                    @Html.ValidationMessageFor(model => model.DateFrom)
+                </div>
+                <div class="col-md-2 col-md-pull-1">End Date</div>
+                <div class="col-md-4 col-md-pull-1">
+                    @Html.EditorFor(model => model.DateTo)
+                    @Html.ValidationMessageFor(model => model.DateTo)
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-2 ">Project</div>
+                <div class="col-md-4 col-md-pull-1">
+                    @Html.DropDownList("ProjectId", null,"Select a value", new { @class = "form-control", style="width:73%;height:30px;" })
+                </div>
+                <div class="col-md-2 col-md-pull-1">Nomination</div>
+                <div class="col-md-4 col-md-pull-1">
+                    @Html.DropDownList("NominationId", null,"Select a value", new { @class = "form-control", style="width:73%;height:30px;" })
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-2 ">Gender</div>
+                <div class="col-md-4 col-md-pull-1">
+                    @Html.DropDownList("GenderId", null,"Select a value", new { @class = "form-control", style="width:73%;height:30px;" })
+                </div>
+                <div class="col-md-2 col-md-pull-1">Age Bracket</div>
+                <div class="col-md-4 col-md-pull-1">
+                    @Html.DropDownList("AgeBracketId", null,"Select a value", new { @class = "form-control", style="width:73%;height:30px;" })
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-2 ">Ethnicity</div>
+                <div class="col-md-4 col-md-pull-1">
+                    @Html.DropDownList("EthnicityId", null,"Select a value", new { @class = "form-control", style="width:73%;height:30px;" })
+                </div>
+                <div class="col-md-2 col-md-pull-1">Funding Responsibility</div>
+                <div class="col-md-4 col-md-pull-1">
+                    @Html.DropDownList("FundingResponsibilityId", null,"Select a value", new { @class = "form-control", style="width:73%;height:30px;" })
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-2 ">Group by</div>
+                <div class="col-md-4 col-md-pull-1">
+                    @Html.DropDownList("GroupByClauseId", null, new { @class = "form-control", style="width:73%;height:30px;" })
+                </div>
+                <div class="col-md-2 col-md-pull-1">Include Leaving Details?</div>
+                <div class="col-md-4 col-md-pull-1">
+                    @Html.CheckBoxFor(model => model.IncludeLeavingDetails)
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-12 col-md-push-1">
+                    <button type="submit" class="btn btn-success">Download Report</button>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
