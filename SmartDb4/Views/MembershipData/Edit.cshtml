@@ -1104,8 +1104,11 @@
             <div class="form-group">
                 <div class="col-sm-12 col-lg-12 col-md-12" style="margin-bottom: 10px;">
                     <button type="button" class="btn btn-primary backttoindex" data-url='@Url.Action("Index")'>Back to List</button>
-                    <button type="submit" name="action:Edit" value="Edit" class="btn btn-success">Save</button>
-                    <button type="submit" name="action:Submit" value="Submit"  class="btn btn-success pull-right">Submit</button>
+                    @if (!User.IsInRole("Staff"))
+                    {
+                        <button type="submit" name="action:Edit" value="Edit" class="btn btn-success">Save</button>
+                        <button type="submit" name="action:Submit" value="Submit"  class="btn btn-success pull-right">Submit</button>
+                    }
                 </div>                    
             </div>
         </div>

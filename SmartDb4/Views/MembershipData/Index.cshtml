@@ -93,16 +93,7 @@
             @foreach (var item in Model.Where(mem => mem.NominationId != 2 && mem.NominationId != 4 && mem.NominationId != 5))
             {
                 <tr>
-                    <td>
-                        @if (User.IsInRole("Admin"))
-                        {
-                            @Html.ActionLink(item.MemberName, "Edit", new { id = item.MemberId })
-                        }
-                        else
-                        {
-                           @Html.DisplayFor(modelItem => item.MemberName) 
-                        }
-                    </td>
+                    <td>@Html.ActionLink(item.MemberName, "Edit", new { id = item.MemberId })</td>
                     <td class="hidden-xs">
                         @Html.DisplayFor(modelItem => item.MobileTel)
                     </td>

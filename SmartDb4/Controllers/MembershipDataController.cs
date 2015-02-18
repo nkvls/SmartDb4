@@ -188,10 +188,9 @@ namespace SmartDb4.Controllers
 
                             UploadFiles(member);
 
-                            if (isUserInReferrerRole)
-                            {
-                                InsertAdminAlert(member);
-                            }
+                            
+                            InsertAdminAlert(member, isUserInReferrerRole);
+                            
 
                             scope.Complete();
 
@@ -259,7 +258,7 @@ namespace SmartDb4.Controllers
            
         }
 
-        [AuthorizeEnum(Role.Admin, Role.Referrer)]
+        [AuthorizeEnum(Role.Admin, Role.Referrer, Role.Staff)]
         public ActionResult Edit(int id = 0)
         {
             try
@@ -323,7 +322,7 @@ namespace SmartDb4.Controllers
             }
         }
 
-        [AuthorizeEnum(Role.Admin, Role.Referrer)]
+        [AuthorizeEnum(Role.Admin, Role.Referrer, Role.Staff)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [MultipleButton(Name = "action", Argument = "Edit")]
@@ -364,11 +363,8 @@ namespace SmartDb4.Controllers
                             InsertNotes(member);
 
                             UploadFiles(member);
-
-                            if (isUserInReferrerRole)
-                            {
-                                InsertAdminAlert(member);
-                            }
+                            
+                            InsertAdminAlert(member, isUserInReferrerRole);
                             
 
                             scope.Complete();
@@ -398,7 +394,7 @@ namespace SmartDb4.Controllers
             return View(member);
         }
 
-        [AuthorizeEnum(Role.Admin, Role.Referrer)]
+        [AuthorizeEnum(Role.Admin, Role.Referrer, Role.Staff)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [MultipleButton(Name = "action", Argument = "Submit")]
@@ -837,7 +833,7 @@ namespace SmartDb4.Controllers
             }
         }
 
-        private void InsertAdminAlert(Member member)
+        private void InsertAdminAlert(Member member, bool isUserInReferrerRole)
         {
             if (_isSubmit == false) return;
             
@@ -864,8 +860,8 @@ namespace SmartDb4.Controllers
                     alert.AlertCreatedOn = currDate;
                     alert.AlertValidDate = currDate;
                 }
-                
-                alert.AlertDesc = member.MemberName + " has been submitted " + " on " + currDate.ToShortDateString() + " for processing";
+
+                alert.AlertDesc = GetAdminAlertDesc(isUserInReferrerRole, member, currDate);
                 _unitOfWork.AdminAlertRepository.Update(alert);
             }
             else
@@ -873,7 +869,7 @@ namespace SmartDb4.Controllers
                 //If No, then insert alert
                 alert = new AdminAlert
                 {
-                    AlertDesc = member.MemberName + " has been submitted " + " on " + currDate.ToShortDateString() + " for processing",
+                    AlertDesc = GetAdminAlertDesc(isUserInReferrerRole, member, currDate),
                     MemberId = member.MemberId,
                     AlertValidDate = currDate,
                     AlertCreatedOn = currDate,
@@ -885,6 +881,18 @@ namespace SmartDb4.Controllers
             }
             
             _unitOfWork.Save();
+        }
+
+        private string GetAdminAlertDesc(bool isUserInReferrerRole, Member member, DateTime currDate)
+        {
+            if (isUserInReferrerRole)
+            {
+                return member.MemberName + " record has been submitted " + " on " + currDate.ToShortDateString() + " ready for processing";
+            }
+            else
+            {
+                return member.MemberName + " record has been submitted " + " on " + currDate.ToShortDateString();
+            }
         }
 
         private void CreateFundingResponsibilityOnTheFly(Member member)
